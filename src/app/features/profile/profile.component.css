@@ -1,0 +1,59 @@
+.profile-shell {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 40px 20px 72px;
+}
+
+.profile-card {
+  padding: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  background: var(--color-card);
+  box-shadow: 0 10px 26px rgba(32, 33, 36, 0.06);
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--color-accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+h1 {
+  margin: 0;
+  color: var(--color-text);
+}
+
+.copy,
+.identifier {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.copy {
+  margin: 12px 0 8px;
+}
+
+.identifier {
+  margin: 0 0 20px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.back-link:hover {
+  transform: translateY(-1px);
+  background: rgba(26, 115, 232, 0.18);
+}

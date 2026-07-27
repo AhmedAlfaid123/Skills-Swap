@@ -1,0 +1,51 @@
+<article class="match-card">
+    <div class="card-top">
+        <div class="avatar" [attr.aria-label]="match.userName">
+            @if (match.avatarUrl) {
+                <img [src]="match.avatarUrl" [alt]="match.userName" />
+            } @else {
+                <span>{{ avatarLabel }}</span>
+            }
+        </div>
+
+        <div class="header-copy">
+            <div class="name-row">
+                <h3>{{ match.userName }}</h3>
+                <span class="match-badge">{{ match.matchPercentage }}% Match</span>
+            </div>
+            <p>{{ match.bio }}</p>
+        </div>
+    </div>
+
+    <dl class="meta-grid">
+        <div>
+            <dt>Track</dt>
+            <dd>{{ match.trackName }}</dd>
+        </div>
+        <div>
+            <dt>Skills To Teach</dt>
+            <dd>
+                <div class="chip-list">
+                    @for (skill of match.teachSkills; track skill) {
+                        <span class="chip">{{ skill }}</span>
+                    }
+                </div>
+            </dd>
+        </div>
+        <div>
+            <dt>Skills To Learn</dt>
+            <dd>
+                <div class="chip-list">
+                    @for (skill of match.learnSkills; track skill) {
+                        <span class="chip chip-muted">{{ skill }}</span>
+                    }
+                </div>
+            </dd>
+        </div>
+    </dl>
+
+    <div class="card-actions">
+        <button type="button" class="secondary-button" (click)="viewProfile.emit(match.userId)">View Profile</button>
+        <button type="button" class="primary-button" (click)="sendSwapRequest.emit(match)">Send Swap Request</button>
+    </div>
+</article>
