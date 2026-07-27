@@ -1,0 +1,75 @@
+<section class="page-shell">
+	<div class="page-header">
+		<div>
+			<p class="eyebrow">Requests</p>
+			<h1>Manage swap requests</h1>
+			<p class="page-copy">Review sent and received requests, then accept, reject, or cancel them from one place.</p>
+		</div>
+	</div>
+
+	<nav class="tab-bar" aria-label="Requests tabs">
+		<button type="button" [class.active]="activeTab === 'sent'" (click)="setActiveTab('sent')">Sent Requests</button>
+		<button type="button" [class.active]="activeTab === 'received'" (click)="setActiveTab('received')">Received Requests</button>
+	</nav>
+
+	@if ((sentRequests.length === 0 && receivedRequests.length === 0) && !sentLoading && !receivedLoading) {
+		<article class="state-card empty-card">
+			<h2>No Requests</h2>
+			<p>Once you send or receive a swap request, it will appear here.</p>
+		</article>
+	}
+
+	@if (activeTab === 'sent') {
+		@if (sentError) {
+			<article class="state-card error-card">
+				<h2>Unable to load sent requests</h2>
+				<p>{{ sentError }}</p>
+				<button type="button" class="primary-button" (click)="retryCurrentTab()">Retry</button>
+			</article>
+		} @else if (sentLoading) {
+			<div class="card-grid" aria-busy="true">
+				@for (skeleton of [1, 2, 3]; track skeleton) {
+					<article class="skeleton-card" aria-hidden="true"></article>
+				}
+			</div>
+		} @else if (sentRequests.length === 0) {
+			<article class="state-card empty-card">
+				<h2>No Sent Requests</h2>
+				<p>You have not sent any swap requests yet.</p>
+			</article>
+		} @else {
+			<div class="card-grid fade-in">
+				@for (requestSummary of sentRequests; track requestSummary.request._id) {
+					<app-request-card [requestSummary]="requestSummary" viewMode="sent" (cancel)="cancelRequest($event)" />
+				}
+			</div>
+		}
+	}
+
+	@if (activeTab === 'received') {
+		@if (receivedError) {
+			<article class="state-card error-card">
+				<h2>Unable to load received requests</h2>
+				<p>{{ receivedError }}</p>
+				<button type="button" class="primary-button" (click)="retryCurrentTab()">Retry</button>
+			</article>
+		} @else if (receivedLoading) {
+			<div class="card-grid" aria-busy="true">
+				@for (skeleton of [1, 2, 3]; track skeleton) {
+					<article class="skeleton-card" aria-hidden="true"></article>
+				}
+			</div>
+		} @else if (receivedRequests.length === 0) {
+			<article class="state-card empty-card">
+				<h2>No Received Requests</h2>
+				<p>You do not have any incoming swap requests right now.</p>
+			</article>
+		} @else {
+			<div class="card-grid fade-in">
+				@for (requestSummary of receivedRequests; track requestSummary.request._id) {
+					<app-request-card [requestSummary]="requestSummary" viewMode="received" (accept)="acceptRequest($event)" (reject)="rejectRequest($event)" />
+				}
+			</div>
+		}
+	}
+</section>
