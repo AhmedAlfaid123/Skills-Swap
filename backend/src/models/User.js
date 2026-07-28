@@ -2,8 +2,8 @@ const mongo = require('mongoose');
 
 const skillRefSchema = new mongo.Schema(
     {
-        trackId: { type: Schema.Types.ObjectId, ref: "Track", required: true },
-        skillId: { type: Schema.Types.ObjectId, ref: "Skill", required: true }
+        trackId: { type: mongo.Schema.Types.ObjectId, ref: "Track", required: true },
+        skillId: { type: mongo.Schema.Types.ObjectId, ref: "Skill", required: true }
     },
     { _id: false }
 );

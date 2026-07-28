@@ -2,15 +2,35 @@
     <div class="login-card">
         <h1>Skills Swap</h1>
         <p class="subtitle">Learn. Teach. Grow Together.</p>
-        <form>
+        <form (ngSubmit) = "login()">
             <div class="form-data">
                 <label for="email">Email</label>
-                <input id="email" type="email" placeholder="Enter your email">
+                <input id="email" type="email" name="email" [(ngModel)]="email" placeholder="Enter your email">
+                @if(emailError){
+                    <small class="error-text">
+                        {{ emailError }}
+                    </small>
+                }
             </div>
             <div class="form-data">
                 <label for="password">Password</label>
-                <input id="password" type="password" placeholder="Enter your password">
+                <input id="password" type="password" name="password" [(ngModel)]="password" placeholder="Enter your password">
+                @if(passwordError){
+                    <small class="error-text">
+                        {{ passwordError }}
+                    </small>
+                }
             </div>
+            @if(serverError){
+                <div class="server-error">
+                    {{ serverError }}
+                </div>
+            }
+            @if(successMessage){
+                <div class="server-success">
+                    {{ successMessage }}
+                </div>
+            }
             <button type="submit">Login</button>
         </form>
         <p class="register-text">Don't have an account?
