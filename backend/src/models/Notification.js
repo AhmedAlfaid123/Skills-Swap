@@ -2,7 +2,7 @@ const mongo = require("mongoose");
 
 const notificationSchema = new mongo.Schema(
     {
-        userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+        userId: { type: mongo.Schema.Types.ObjectId, ref: "User", required: true },
         type: {
             type: String,
             enum: ["new", "accepted", "rejected"],
