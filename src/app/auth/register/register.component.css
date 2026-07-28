@@ -90,3 +90,23 @@ button:hover{
 .login-text a:hover{
     text-decoration: underline;
 }
+.error-text{
+    color:#dc2626;
+    font-size:13px;
+    margin-top:6px;
+    display:block;
+}
+.server-error{
+    margin:15px 0;
+    padding:12px;
+    background:#fee2e2;
+    color:#991b1b;
+    border-radius:8px;
+}
+.server-success{
+    margin:15px 0;
+    padding:12px;
+    background:#dcfce7;
+    color:#166534;
+    border-radius:8px;
+}
