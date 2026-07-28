@@ -1,0 +1,31 @@
+<section class="filter-shell">
+	<label class="search-field">
+		<span>Search</span>
+		<input
+			type="search"
+			[ngModel]="searchTerm"
+			(ngModelChange)="searchTermChange.emit($event)"
+			placeholder="Search by name, skill, or bio"
+		/>
+	</label>
+
+	<label class="select-field">
+		<span>Track</span>
+		<select [ngModel]="selectedTrack" (ngModelChange)="selectedTrackChange.emit($event)">
+			@for (option of trackOptions; track option.value) {
+				<option [value]="option.value">{{ option.label }}</option>
+			}
+		</select>
+	</label>
+
+	<label class="select-field">
+		<span>Skill</span>
+		<select [ngModel]="selectedSkill" (ngModelChange)="selectedSkillChange.emit($event)">
+			@for (option of skillOptions; track option.value) {
+				<option [value]="option.value">{{ option.label }}</option>
+			}
+		</select>
+	</label>
+
+	<button type="button" class="reset-button" (click)="resetFilters.emit()">Reset Filters</button>
+</section>

@@ -1,0 +1,55 @@
+<section class="page-shell">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Matching</p>
+      <h1>Find your next skill swap</h1>
+      <p class="page-copy">Search people by track, discover complementary skills, and send a request in one step.</p>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <article class="state-card error-card">
+      <h2>Something went wrong</h2>
+      <p>{{ errorMessage }}</p>
+      <button type="button" class="primary-button" (click)="retry()">Retry</button>
+    </article>
+  } @else {
+    <app-filter-bar
+      [searchTerm]="searchTerm"
+      [selectedTrack]="selectedTrack"
+      [selectedSkill]="selectedSkill"
+      [trackOptions]="trackOptions"
+      [skillOptions]="skillOptions"
+      (searchTermChange)="onSearchTermChange($event)"
+      (selectedTrackChange)="onSelectedTrackChange($event)"
+      (selectedSkillChange)="onSelectedSkillChange($event)"
+      (resetFilters)="resetFilters()"
+    />
+
+    @if (loading) {
+      <div class="card-grid" aria-busy="true">
+        @for (skeleton of [1, 2, 3, 4, 5, 6]; track skeleton) {
+          <article class="skeleton-card" aria-hidden="true">
+            <div class="skeleton-row avatar"></div>
+            <div class="skeleton-row title"></div>
+            <div class="skeleton-row copy"></div>
+            <div class="skeleton-row copy short"></div>
+            <div class="skeleton-row button"></div>
+          </article>
+        }
+      </div>
+    } @else if (visibleMatches.length === 0) {
+      <article class="state-card empty-card">
+        <h2>No Matches Found</h2>
+        <p>Try adjusting your search or filters to discover more people.</p>
+        <button type="button" class="primary-button" (click)="resetFilters()">Reset Filters</button>
+      </article>
+    } @else {
+      <div class="card-grid fade-in">
+        @for (match of visibleMatches; track match.userId) {
+          <app-match-card [match]="match" (viewProfile)="handleViewProfile($event)" (sendSwapRequest)="handleSendRequest($event)" />
+        }
+      </div>
+    }
+  }
+</section>

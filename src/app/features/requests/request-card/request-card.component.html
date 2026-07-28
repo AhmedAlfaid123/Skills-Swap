@@ -1,0 +1,33 @@
+<article class="request-card">
+  <div class="request-top">
+    <div class="avatar" [attr.aria-label]="requestSummary.counterpartyName">
+      @if (requestSummary.counterpartyAvatarUrl) {
+        <img [src]="requestSummary.counterpartyAvatarUrl" [alt]="requestSummary.counterpartyName" />
+      } @else {
+        <span>{{ avatarLabel }}</span>
+      }
+    </div>
+
+    <div class="request-copy">
+      <div class="request-header">
+        <h3>{{ requestSummary.counterpartyName }}</h3>
+        <span [class]="badgeClass">{{ statusLabel }}</span>
+      </div>
+      <p>
+        Teach <strong>{{ requestSummary.teachSkillName }}</strong> in {{ requestSummary.teachTrackName }} and learn
+        <strong>{{ requestSummary.learnSkillName }}</strong> in {{ requestSummary.learnTrackName }}.
+      </p>
+    </div>
+  </div>
+
+  <div class="request-actions">
+    @if (canAccept) {
+      <button type="button" class="primary-button" (click)="accept.emit(requestSummary.request._id)">Accept</button>
+      <button type="button" class="secondary-button danger-button" (click)="reject.emit(requestSummary.request._id)">Reject</button>
+    }
+
+    @if (canCancel) {
+      <button type="button" class="secondary-button danger-button" (click)="cancel.emit(requestSummary.request._id)">Cancel</button>
+    }
+  </div>
+</article>
