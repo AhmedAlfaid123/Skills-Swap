@@ -17,7 +17,3 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'notifications', component: NotificationsComponent }
 ];
-
-
-
-
