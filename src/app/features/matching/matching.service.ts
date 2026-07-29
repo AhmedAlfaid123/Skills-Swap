@@ -9,27 +9,7 @@ export class MatchingService {
   constructor(private readonly httpClient: HttpClient, @Inject(API_BASE_URL) private readonly apiBaseUrl: string) {}
 
   getMatches(): Observable<MatchViewModel[]> {
-    // Using mock data for Day-1 as per requirements
-    const mockApiResponse = {
-      success: true,
-      data: [
-        {
-          user: { _id: '1', name: 'Alice Smith', avatarUrl: '', bio: 'Frontend Developer' },
-          track: { _id: 't1', name: 'Web Development', description: '' },
-          skillsToTeach: [{ _id: 's1', trackId: 't1', name: 'Angular' }],
-          skillsToLearn: [{ _id: 's2', trackId: 't1', name: 'React' }],
-          matchPercentage: 90
-        },
-        {
-          user: { _id: '2', name: 'Bob Jones', avatarUrl: '', bio: 'Backend Engineer' },
-          track: { _id: 't2', name: 'Data Science', description: '' },
-          skillsToTeach: [{ _id: 's3', trackId: 't2', name: 'Python' }],
-          skillsToLearn: [{ _id: 's1', trackId: 't1', name: 'Angular' }],
-          matchPercentage: 70
-        }
-      ]
-    };
-    return of(mockApiResponse.data).pipe(map((matches) => matches.map((match) => this.toViewModel(match as any))));
+    return this.httpClient.get<Match[]>(`${this.apiBaseUrl}/matches`).pipe(map((matches) => matches.map((match) => this.toViewModel(match))));
   }
 
   searchMatches(searchTerm: string): Observable<MatchViewModel[]> {
