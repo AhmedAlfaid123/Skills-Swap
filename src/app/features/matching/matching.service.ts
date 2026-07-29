@@ -12,14 +12,6 @@ export class MatchingService {
     return this.httpClient.get<Match[]>(`${this.apiBaseUrl}/matches`).pipe(map((matches) => matches.map((match) => this.toViewModel(match))));
   }
 
-  searchMatches(searchTerm: string): Observable<MatchViewModel[]> {
-    return this.getMatches().pipe(map((matches) => this.applyFilters(matches, { searchTerm, trackName: 'all', skillName: 'all' })));
-  }
-
-  filterMatches(filters: MatchFilters): Observable<MatchViewModel[]> {
-    return this.getMatches().pipe(map((matches) => this.applyFilters(matches, filters)));
-  }
-
   applyFilters(matches: MatchViewModel[], filters: MatchFilters): MatchViewModel[] {
     const normalizedSearchTerm = filters.searchTerm.trim().toLowerCase();
 
