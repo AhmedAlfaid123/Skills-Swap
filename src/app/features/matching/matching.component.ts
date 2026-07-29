@@ -61,10 +61,11 @@ export class MatchingComponent implements OnInit, OnDestroy {
           this.trackOptions = filterOptions.tracks;
           this.skillOptions = filterOptions.skills;
           this.loading = false;
+          this.errorMessage = '';
         },
-        error: () => {
+        error: (error) => {
           this.loading = false;
-          this.errorMessage = 'We could not load your matches right now. Please try again.';
+          this.errorMessage = this.getErrorMessage(error, 'We could not load your matches right now. Please try again.');
         }
       });
   }
@@ -120,9 +121,12 @@ export class MatchingComponent implements OnInit, OnDestroy {
       .sendRequest({ toUser: match.userId, teachSkillId: match.teachSkillId, learnSkillId: match.learnSkillId })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => this.showToast(`Swap request sent to ${match.userName}.`),
-        error: () => {
-          this.errorMessage = 'We could not send that swap request. Please retry.';
+        next: () => {
+          this.errorMessage = '';
+          this.showToast(`Swap request sent to ${match.userName}.`);
+        },
+        error: (error) => {
+          this.errorMessage = this.getErrorMessage(error, 'We could not send that swap request. Please retry.');
         }
       });
   }
@@ -138,5 +142,16 @@ export class MatchingComponent implements OnInit, OnDestroy {
     window.setTimeout(() => {
       this.toastVisible = false;
     }, 2800);
+  }
+
+  private getErrorMessage(error: unknown, fallbackMessage: string): string {
+    if (typeof error === 'object' && error !== null && 'error' in error) {
+      const responseError = (error as { error?: { message?: unknown } }).error;
+      if (typeof responseError?.message === 'string' && responseError.message.trim().length > 0) {
+        return responseError.message;
+      }
+    }
+
+    return fallbackMessage;
   }
 }
