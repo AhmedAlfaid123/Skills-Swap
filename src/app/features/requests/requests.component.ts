@@ -53,10 +53,11 @@ export class RequestsComponent implements OnInit, OnDestroy {
         next: (requests) => {
           this.sentRequests = requests;
           this.sentLoading = false;
+          this.sentError = '';
         },
-        error: () => {
+        error: (error) => {
           this.sentLoading = false;
-          this.sentError = 'We could not load sent requests right now.';
+          this.sentError = this.getErrorMessage(error, 'We could not load sent requests right now.');
         }
       });
   }
@@ -72,10 +73,11 @@ export class RequestsComponent implements OnInit, OnDestroy {
         next: (requests) => {
           this.receivedRequests = requests;
           this.receivedLoading = false;
+          this.receivedError = '';
         },
-        error: () => {
+        error: (error) => {
           this.receivedLoading = false;
-          this.receivedError = 'We could not load received requests right now.';
+          this.receivedError = this.getErrorMessage(error, 'We could not load received requests right now.');
         }
       });
   }
@@ -100,10 +102,11 @@ export class RequestsComponent implements OnInit, OnDestroy {
               ? { ...requestSummary, request: { ...requestSummary.request, status: 'accepted' } }
               : requestSummary
           );
+          this.receivedError = '';
           this.showToast('Swap request accepted.');
         },
-        error: () => {
-          this.receivedError = 'We could not accept that request. Please try again.';
+        error: (error) => {
+          this.receivedError = this.getErrorMessage(error, 'We could not accept that request. Please try again.');
         }
       });
   }
@@ -119,10 +122,11 @@ export class RequestsComponent implements OnInit, OnDestroy {
               ? { ...requestSummary, request: { ...requestSummary.request, status: 'rejected' } }
               : requestSummary
           );
+          this.receivedError = '';
           this.showToast('Swap request rejected.');
         },
-        error: () => {
-          this.receivedError = 'We could not reject that request. Please try again.';
+        error: (error) => {
+          this.receivedError = this.getErrorMessage(error, 'We could not reject that request. Please try again.');
         }
       });
   }
@@ -138,10 +142,11 @@ export class RequestsComponent implements OnInit, OnDestroy {
               ? { ...requestSummary, request: { ...requestSummary.request, status: 'cancelled' } }
               : requestSummary
           );
+          this.sentError = '';
           this.showToast('Swap request cancelled.');
         },
-        error: () => {
-          this.sentError = 'We could not cancel that request. Please try again.';
+        error: (error) => {
+          this.sentError = this.getErrorMessage(error, 'We could not cancel that request. Please try again.');
         }
       });
   }
@@ -153,5 +158,16 @@ export class RequestsComponent implements OnInit, OnDestroy {
     window.setTimeout(() => {
       this.toastVisible = false;
     }, 2800);
+  }
+
+  private getErrorMessage(error: unknown, fallbackMessage: string): string {
+    if (typeof error === 'object' && error !== null && 'error' in error) {
+      const responseError = (error as { error?: { message?: unknown } }).error;
+      if (typeof responseError?.message === 'string' && responseError.message.trim().length > 0) {
+        return responseError.message;
+      }
+    }
+
+    return fallbackMessage;
   }
 }
