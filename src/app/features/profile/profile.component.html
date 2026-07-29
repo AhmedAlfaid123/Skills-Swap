@@ -1,9 +1,211 @@
-<section class="profile-shell">
-  <article class="profile-card">
-    <p class="eyebrow">Profile</p>
-    <h1>User profile</h1>
-    <p class="copy">Profile details are wired to the route and ready for backend data loading.</p>
-    <p class="identifier">Selected profile: {{ userId }}</p>
-    <a routerLink="/matching" class="back-link">Back to matching</a>
-  </article>
+<main class="profile-page">
+<div class="profile-container">
+
+<section class="card header-card" [class.editing]="isEditingProfile">
+
+<div class="header-actions">
+<button class="icon-btn" type="button" (click)="enterProfileEdit()" [disabled]="isEditingProfile" title="Edit Profile"><iconify-icon icon="lucide:pencil-line"></iconify-icon></button>
+<button class="icon-btn" type="button" (click)="shareProfile()" title="Share Profile"><iconify-icon icon="lucide:share-2"></iconify-icon></button>
+<button class="icon-btn" type="button" (click)="copyProfileLink()" title="Copy Link"><iconify-icon icon="lucide:link"></iconify-icon></button>
+</div>
+
+<div class="header-top">
+
+<div class="avatar-wrap">
+<img [src]="profile.avatarUrl" [alt]="profile.name" class="avatar-img"/>
+<button class="avatar-camera-btn" type="button" title="Change photo" (click)="toggleAvatarMenu()">
+<iconify-icon icon="lucide:camera"></iconify-icon>
+</button>
+<div class="avatar-menu" *ngIf="showAvatarMenu">
+<button class="avatar-menu-item" type="button" (click)="triggerAvatarUpload()"><iconify-icon icon="lucide:upload"></iconify-icon>Upload new photo</button>
+<button class="avatar-menu-item danger" type="button" (click)="removeAvatar()"><iconify-icon icon="lucide:trash-2"></iconify-icon>Remove photo</button>
+</div>
+<input #avatarInput accept="image/*" class="hidden-input" type="file" (change)="onAvatarSelected($event)"/>
+</div>
+
+<div class="header-info">
+
+<ng-container *ngIf="!isEditingProfile; else nameEdit">
+<h1 class="profile-name">{{ profile.name || 'Your Name' }}</h1>
+<p class="profile-subline">
+<span class="profile-title">{{ profile.title || 'Your Title' }}</span>
+<span class="dot">·</span>
+<span class="profile-location">{{ profile.location || 'Your Location' }}</span>
+</p>
+<p class="profile-bio">{{ profile.bio || 'Tell others about yourself.' }}</p>
+</ng-container>
+
+<ng-template #nameEdit>
+<span class="editing-badge"><iconify-icon icon="lucide:sparkles"></iconify-icon>Editing</span>
+<input class="edit-input name-input" [(ngModel)]="profile.name" name="name" placeholder="Your Name"/>
+<input class="edit-input title-input" [(ngModel)]="profile.title" name="title" placeholder="Your Title"/>
+<input class="edit-input location-input" [(ngModel)]="profile.location" name="location" placeholder="Your Location"/>
+<textarea class="edit-input bio-input" rows="3" [(ngModel)]="profile.bio" name="bio" placeholder="Tell others about yourself."></textarea>
+</ng-template>
+
+<div class="joined-row">
+<iconify-icon icon="lucide:calendar"></iconify-icon>
+<span>Joined <strong>{{ profile.joinedDate || '—' }}</strong></span>
+</div>
+
+<div class="contact-row">
+<div class="contact-details">
+<span class="contact-chip">
+<iconify-icon icon="lucide:mail" class="chip-icon mail"></iconify-icon>
+<ng-container *ngIf="!isEditingProfile; else emailEdit">{{ profile.email || 'you@example.com' }}</ng-container>
+<ng-template #emailEdit><input class="edit-input inline-input" [(ngModel)]="profile.email" name="email" placeholder="you@example.com"/></ng-template>
+</span>
+<span class="contact-chip">
+<iconify-icon icon="lucide:phone" class="chip-icon phone"></iconify-icon>
+<ng-container *ngIf="!isEditingProfile; else phoneEdit">{{ profile.phone || '+00 000 000 0000' }}</ng-container>
+<ng-template #phoneEdit><input class="edit-input inline-input" [(ngModel)]="profile.phone" name="phone" placeholder="+00 000 000 0000"/></ng-template>
+</span>
+</div>
+<div class="account-links">
+<a class="account-icon-btn" [href]="profile.githubUrl" target="_blank" rel="noopener noreferrer" title="GitHub"><iconify-icon icon="simple-icons:github"></iconify-icon></a>
+<a class="account-icon-btn" [class.disabled]="!profile.linkedinUrl" [href]="profile.linkedinUrl" target="_blank" rel="noopener noreferrer" title="LinkedIn"><iconify-icon icon="simple-icons:linkedin"></iconify-icon></a>
+<a class="account-icon-btn" [href]="profile.twitterUrl" target="_blank" rel="noopener noreferrer" title="X"><iconify-icon icon="simple-icons:x"></iconify-icon></a>
+<a class="account-icon-btn" [href]="profile.discordUrl" target="_blank" rel="noopener noreferrer" title="Discord"><iconify-icon icon="simple-icons:discord"></iconify-icon></a>
+</div>
+<button class="message-btn" type="button">
+<iconify-icon icon="lucide:send"></iconify-icon>
+<span>Send Message</span>
+</button>
+</div>
+</div>
+</div>
+
+<div class="meta-grid">
+<div class="meta-item">
+<span class="meta-icon lang-icon"><iconify-icon icon="lucide:languages"></iconify-icon></span>
+<div class="meta-text">
+<p class="meta-label">Languages</p>
+<ng-container *ngIf="!isEditingProfile; else langEdit"><p class="meta-value">{{ profile.languages || '—' }}</p></ng-container>
+<ng-template #langEdit><input class="edit-input" [(ngModel)]="profile.languages" name="languages" placeholder="English, Arabic"/></ng-template>
+</div>
+</div>
+<div class="meta-item">
+<span class="meta-icon avail-icon"><iconify-icon icon="lucide:clock"></iconify-icon></span>
+<div class="meta-text">
+<p class="meta-label">Availability</p>
+<p class="meta-value" *ngIf="!isEditingProfile">{{ profile.availability }}</p>
+<select class="edit-input" *ngIf="isEditingProfile" [(ngModel)]="profile.availability" name="availability">
+<option *ngFor="let opt of availabilityOptions" [value]="opt">{{ opt }}</option>
+</select>
+</div>
+</div>
+</div>
+
+<div class="header-edit-actions" *ngIf="isEditingProfile">
+<button class="btn btn-cancel" type="button" [disabled]="isSavingProfile" (click)="cancelProfileEdit()"><iconify-icon icon="lucide:x"></iconify-icon>Cancel</button>
+<button class="btn btn-save" type="button" [disabled]="!hasProfileChanges || isSavingProfile" (click)="saveProfileEdit()">
+<iconify-icon icon="lucide:check" *ngIf="!isSavingProfile"></iconify-icon>
+<span *ngIf="!isSavingProfile">Save Changes</span>
+<span class="spinner" *ngIf="isSavingProfile"></span>
+</button>
+</div>
 </section>
+
+<section class="card stats-card">
+<div class="stats-row">
+<ng-container *ngFor="let stat of stats; let last = last">
+<div class="stat-item">
+<span class="stat-icon" [style.background]="stat.iconBg"><iconify-icon [attr.icon]="stat.icon" [style.color]="stat.iconColor"></iconify-icon></span>
+<div class="stat-text">
+<p class="stat-label">{{ stat.label }}</p>
+<p class="stat-value">{{ stat.value }}</p>
+</div>
+</div>
+<div class="stat-divider" *ngIf="!last"></div>
+</ng-container>
+<div class="stat-divider"></div>
+<div class="stat-item">
+<span class="stat-icon" style="background:#FFF7E0;"><iconify-icon icon="lucide:star" style="color:#F5A623;"></iconify-icon></span>
+<div class="stat-text">
+<p class="stat-label">Rating</p>
+<p class="stat-value">{{ rating }}</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="card skills-card">
+<div class="skills-header">
+<h2>Skills</h2>
+<span class="edit-icon" title="Edit" (click)="enterSkillsEdit()" *ngIf="!isEditingSkills">
+<iconify-icon icon="lucide:pencil-line"></iconify-icon>
+</span>
+</div>
+
+<div class="skills-groups">
+<div class="skills-group">
+<p class="skills-group-title">Skills to Teach <span>— from Tracks</span></p>
+<div class="chips-row">
+<span class="chip level-chip" *ngFor="let skill of teachSkills">
+<span class="chip-top">
+<iconify-icon [attr.icon]="skill.icon" [style.color]="skill.color"></iconify-icon>
+<span class="chip-name">{{ skill.name }}</span>
+</span>
+<span class="progress-row">
+<span class="progress-track"><span class="progress-fill" [style.width.%]="levelPercent(skill.level)" [ngClass]="'level-' + (skill.level || 'beginner').toLowerCase()"></span></span>
+<span class="progress-label" [ngClass]="'level-text-' + (skill.level || 'beginner').toLowerCase()">{{ levelPercent(skill.level) }}%</span>
+</span>
+<span class="chip-remove" *ngIf="isEditingSkills" (click)="removeTeachSkill(skill.name)"><iconify-icon icon="lucide:x"></iconify-icon></span>
+</span>
+</div>
+<div class="skill-search" *ngIf="isEditingSkills">
+<div class="search-box">
+<iconify-icon icon="lucide:search" class="search-icon"></iconify-icon>
+<input class="edit-input" placeholder="Search tracks to add…" type="text" autocomplete="off" [(ngModel)]="teachSearchQuery" name="teachSearch" (focus)="teachDropdownOpen = true" (blur)="teachDropdownOpen = false"/>
+</div>
+<div class="dropdown" *ngIf="teachDropdownOpen">
+<div class="dropdown-item" *ngFor="let name of teachSuggestions" (mousedown)="addTeachSkill(name)">
+<iconify-icon [attr.icon]="trackMeta(name).icon" [style.color]="trackMeta(name).color"></iconify-icon>
+<span>{{ name }}</span>
+</div>
+<div class="dropdown-empty" *ngIf="teachSuggestions.length === 0">No matching tracks</div>
+</div>
+</div>
+</div>
+
+<div class="skills-group">
+<p class="skills-group-title">Skills to Learn <span>— from Tracks</span></p>
+<div class="chips-row">
+<span class="chip simple-chip" *ngFor="let skill of learnSkills">
+<iconify-icon [attr.icon]="skill.icon" [style.color]="skill.color"></iconify-icon>
+<span>{{ skill.name }}</span>
+<span class="chip-remove-inline" *ngIf="isEditingSkills" (click)="removeLearnSkill(skill.name)"><iconify-icon icon="lucide:x"></iconify-icon></span>
+</span>
+</div>
+<div class="skill-search" *ngIf="isEditingSkills">
+<div class="search-box">
+<iconify-icon icon="lucide:search" class="search-icon"></iconify-icon>
+<input class="edit-input" placeholder="Search tracks to add…" type="text" autocomplete="off" [(ngModel)]="learnSearchQuery" name="learnSearch" (focus)="learnDropdownOpen = true" (blur)="learnDropdownOpen = false"/>
+</div>
+<div class="dropdown" *ngIf="learnDropdownOpen">
+<div class="dropdown-item" *ngFor="let name of learnSuggestions" (mousedown)="addLearnSkill(name)">
+<iconify-icon [attr.icon]="trackMeta(name).icon" [style.color]="trackMeta(name).color"></iconify-icon>
+<span>{{ name }}</span>
+</div>
+<div class="dropdown-empty" *ngIf="learnSuggestions.length === 0">No matching tracks</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="skills-edit-actions" *ngIf="isEditingSkills">
+<button class="btn btn-cancel" type="button" [disabled]="isSavingSkills" (click)="cancelSkillsEdit()">Cancel</button>
+<button class="btn btn-save" type="button" [disabled]="isSavingSkills" (click)="confirmSkillsEdit()">
+<span *ngIf="!isSavingSkills">Confirm Changes</span>
+<span class="spinner spinner-alt" *ngIf="isSavingSkills"></span>
+</button>
+</div>
+</section>
+
+</div>
+</main>
+
+<div class="toast" [class.visible]="toastVisible">
+<iconify-icon icon="lucide:check-circle-2"></iconify-icon>
+<span>{{ toastMessage }}</span>
+</div>
