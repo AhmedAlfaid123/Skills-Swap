@@ -62,9 +62,11 @@ export class MatchingComponent implements OnInit, OnDestroy {
           this.skillOptions = filterOptions.skills;
           this.loading = false;
         },
-        error: () => {
+        error: (error) => {
           this.loading = false;
-          this.errorMessage = 'We could not load your matches right now. Please try again.';
+          this.errorMessage = error.name === 'TimeoutError' || error.status === 0
+            ? 'The backend is not running on localhost:5000. Start it, then retry.'
+            : error.error?.message ?? 'We could not load your matches right now. Please try again.';
         }
       });
   }
@@ -107,7 +109,7 @@ export class MatchingComponent implements OnInit, OnDestroy {
   }
 
   handleViewProfile(userId: string): void {
-    void this.router.navigate(['/profile', userId]);
+    void this.router.navigate(['/users', userId]);
   }
 
   handleSendRequest(match: MatchViewModel): void {
@@ -120,9 +122,14 @@ export class MatchingComponent implements OnInit, OnDestroy {
       .sendRequest({ toUser: match.userId, teachSkillId: match.teachSkillId, learnSkillId: match.learnSkillId })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => this.showToast(`Swap request sent to ${match.userName}.`),
-        error: () => {
-          this.errorMessage = 'We could not send that swap request. Please retry.';
+        next: () => {
+          this.showToast(`Swap request sent to ${match.userName}.`);
+          void this.router.navigate(['/requests']);
+        },
+        error: (error) => {
+          this.errorMessage = error.status === 401
+            ? 'Please log in before sending a swap request.'
+            : error.error?.message ?? 'We could not send that swap request. Please retry.';
         }
       });
   }

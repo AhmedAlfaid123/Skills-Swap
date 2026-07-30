@@ -1,0 +1,49 @@
+.user-details-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.profile-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.profile-card img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.bio {
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.skills-section {
+  text-align: right;
+  margin-bottom: 16px;
+}
+
+.track-tag {
+  color: #888;
+  font-size: 0.85em;
+}
+
+.request-btn {
+  margin-top: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.error {
+  color: #dc2626;
+}

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { Auth } from "../../services/auth";
 import {Router} from '@angular/router';
