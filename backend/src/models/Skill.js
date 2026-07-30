@@ -2,7 +2,7 @@ const mongo = require("mongoose");
 
 const trackSchema = new mongo.Schema(
     {
-        trackId: { type: Schema.Types.ObjectId, ref: "Track", required: true },
+        trackId: { type: mongo.Schema.Types.ObjectId, ref: "Track", required: true },
         name: { type: String, required: true, trim: true }
     },
     {
