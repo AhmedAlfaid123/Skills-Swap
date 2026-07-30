@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, timeout } from 'rxjs';
 import { API_BASE_URL } from '../../app.config';
 import { FilterOption, Match, MatchFilters, MatchViewModel } from '../../models/match';
 
@@ -9,7 +9,10 @@ export class MatchingService {
   constructor(private readonly httpClient: HttpClient, @Inject(API_BASE_URL) private readonly apiBaseUrl: string) {}
 
   getMatches(): Observable<MatchViewModel[]> {
-    return this.httpClient.get<Match[]>(`${this.apiBaseUrl}/matches`).pipe(map((matches) => matches.map((match) => this.toViewModel(match))));
+    return this.httpClient.get<Match[]>(`${this.apiBaseUrl}/matches`).pipe(
+      timeout(5000),
+      map((matches) => matches.map((match) => this.toViewModel(match)))
+    );
   }
 
   searchMatches(searchTerm: string): Observable<MatchViewModel[]> {
