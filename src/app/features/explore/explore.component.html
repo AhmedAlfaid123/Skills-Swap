@@ -31,27 +31,33 @@
       *ngFor="let user of users"
       (click)="goToUserDetails(user._id)"
     >
-      <img [src]="user.avatarUrl" alt="Avatar" class="avatar" />
-      <h3>{{ user.name }}</h3>
+      <div class="card-header">
+        <img [src]="user.avatarUrl" alt="Avatar" class="avatar" />
+        <h3>{{ user.name }}</h3>
+      </div>
 
       <div class="skills-section" *ngIf="user.skillsToTeach?.length">
-        <p><strong>Can Teach:</strong></p>
-        <span
-          class="badge teach"
-          *ngFor="let skill of user.skillsToTeach"
-        >
-          {{ $any(skill).skillName || $any(skill.skillId)?.name || skill.skillId }}
-        </span>
+        <p class="section-title">Can Teach:</p>
+        <div class="badges-container">
+          <span
+            class="badge teach"
+            *ngFor="let skill of user.skillsToTeach"
+          >
+            {{ $any(skill).skillName || $any(skill.skillId)?.name || skill.skillId }}
+          </span>
+        </div>
       </div>
 
       <div class="skills-section" *ngIf="user.skillsToLearn?.length">
-        <p><strong>Wants to Learn:</strong></p>
-        <span
-          class="badge learn"
-          *ngFor="let skill of user.skillsToLearn"
-        >
-          {{ $any(skill).skillName || $any(skill.skillId)?.name || skill.skillId }}
-        </span>
+        <p class="section-title">Wants to Learn:</p>
+        <div class="badges-container">
+          <span
+            class="badge learn"
+            *ngFor="let skill of user.skillsToLearn"
+          >
+            {{ $any(skill).skillName || $any(skill.skillId)?.name || skill.skillId }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
