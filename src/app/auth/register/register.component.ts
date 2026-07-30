@@ -2,9 +2,11 @@ import { Component } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { Auth } from "../../services/auth";
+import {Router} from "@angular/router";
 @Component({
     selector: 'app-register',
-    imports: [RouterLink, FormsModule],
+    standalone: true,
+    imports: [RouterLink, RouterLinkActive, FormsModule],
     templateUrl: './register.component.html',
     styleUrl: './register.component.css'
 })
@@ -21,7 +23,7 @@ export class registerComponent {
     confirmPasswordError = "";
     serverError = "";
     successMessage = "";
-    constructor(private auth: Auth) { }
+    constructor(private auth: Auth , private router: Router) { }
     register() {
         this.firstNameError = "";
         this.lastNameError = "";
@@ -87,6 +89,7 @@ export class registerComponent {
                 this.password = "";
                 this.confirmPassword = "";
                 console.log(res);
+                this.router.navigate(['/profile']);
             },
             error: (err) => {
                 const message = err.error?.message || "Something went wrong";

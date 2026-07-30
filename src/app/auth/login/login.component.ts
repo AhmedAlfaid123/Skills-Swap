@@ -2,9 +2,11 @@ import { Component } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { Auth } from "../../services/auth";
+import {Router} from '@angular/router';
 @Component({
     selector: 'app-login',
-    imports: [RouterLink, FormsModule],
+    standalone:true,
+    imports: [RouterLink, RouterLinkActive, FormsModule],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css'
 })
@@ -15,7 +17,7 @@ export class loginComponent {
     passwordError = "";
     serverError = "";
     successMessage = "";
-    constructor(private auth: Auth) { }
+    constructor(private auth: Auth , private router:Router) { }
     login() {
         this.emailError = "";
         this.passwordError = "";
@@ -44,6 +46,7 @@ export class loginComponent {
                 this.email = "";
                 this.password = "";
                 console.log(res);
+                this.router.navigate(['/home']);
             },
             error: (err) => {
                 const message = err.error?.message || "Something went wrong";
