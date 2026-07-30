@@ -35,12 +35,6 @@
     </div>
 
    
-    <button 
-      class="request-btn" 
-      [routerLink]="['/requests/new']" 
-      [queryParams]="{ toUserId: $any(user)._id || $any(user).id }"
-    >
-      Send Swap Request
-    </button>
+    <a class="request-btn" routerLink="/matching">Find a matching skill swap</a>
   </div>
 </div>   
