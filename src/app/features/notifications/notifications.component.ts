@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../services/notification.service';
 import { Notification } from '../../models/notification';
@@ -7,6 +7,7 @@ import { Notification } from '../../models/notification';
   selector: 'app-notifications',
   standalone: true,
   imports: [CommonModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.css']
 })
@@ -23,7 +24,6 @@ export class NotificationsComponent implements OnInit {
   fetchNotifications(): void {
     this.loading = true;
     
-    // Simulate API call based on Day-1 Mock requirement
     setTimeout(() => {
       this.notifications = [
         { id: '101', type: 'new_request', message: 'Alice wants to learn React from you!', isRead: false, createdAt: new Date().toISOString() },
@@ -37,7 +37,6 @@ export class NotificationsComponent implements OnInit {
   markAsRead(notification: Notification): void {
     if (notification.isRead) return;
     
-    // In real app: this.notificationService.markAsRead(notification.id).subscribe(...)
     notification.isRead = true;
   }
 
@@ -55,10 +54,10 @@ export class NotificationsComponent implements OnInit {
 
   getIconForType(type: string): string {
     switch(type) {
-      case 'new_request': return '📩';
-      case 'request_accepted': return '✅';
-      case 'request_rejected': return '❌';
-      default: return '🔔';
+      case 'new_request': return 'mdi:email-outline';
+      case 'request_accepted': return 'mdi:check-circle-outline';
+      case 'request_rejected': return 'mdi:close-circle-outline';
+      default: return 'mdi:bell-outline';
     }
   }
 }

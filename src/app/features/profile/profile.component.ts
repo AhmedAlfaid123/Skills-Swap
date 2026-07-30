@@ -253,7 +253,7 @@ export class ProfileComponent {
     const url = this.profileUrl();
     const nav = navigator as Navigator & { share?: (data: { title: string; url: string }) => Promise<void> };
     if (nav.share) {
-      nav.share({ title: this.profile.name, url }).catch(() => {});
+      nav.share({ title: this.profile.name, url }).catch(() => { });
     } else {
       this.showToast('Share link ready to copy');
     }

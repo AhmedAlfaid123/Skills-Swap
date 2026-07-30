@@ -12,21 +12,21 @@
   <div *ngIf="!loading && dashboardData" class="dashboard-content">
     <section class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon">🎓</div>
+        <iconify-icon icon="mdi:school-outline" class="stat-icon"></iconify-icon>
         <div class="stat-info">
           <h3>Skills Offered</h3>
           <p class="stat-value">{{ dashboardData.skillsOffered }}</p>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">📚</div>
+        <iconify-icon icon="mdi:book-open-outline" class="stat-icon"></iconify-icon>
         <div class="stat-info">
           <h3>Skills to Learn</h3>
           <p class="stat-value">{{ dashboardData.skillsToLearn }}</p>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon">🤝</div>
+        <iconify-icon icon="mdi:handshake-outline" class="stat-icon"></iconify-icon>
         <div class="stat-info">
           <h3>Total Matches</h3>
           <p class="stat-value">{{ dashboardData.totalMatches }}</p>
