@@ -1,9 +1,10 @@
 const mongo = require("mongoose");
 
-const trackSchema = new mongo.Schema(
+const skillSchema = new mongo.Schema(
     {
+        name: { type: String, required: true, trim: true },
         trackId: { type: mongo.Schema.Types.ObjectId, ref: "Track", required: true },
-        name: { type: String, required: true, trim: true }
+        description: { type: String, default: "" }
     },
     {
         timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" }
