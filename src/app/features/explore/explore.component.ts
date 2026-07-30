@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { DiscoveryService } from '../../services/discovery.service';
 import { User } from '../../models/user';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './explore.component.html',
   styleUrls: ['./explore.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
 })
 
 
