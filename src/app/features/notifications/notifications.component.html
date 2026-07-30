@@ -15,27 +15,23 @@
   </div>
 
   <div *ngIf="!loading" class="notifications-list">
-    <div class="notification-item" 
-         *ngFor="let notification of notifications" 
-         [class.unread]="!notification.isRead"
-         (click)="markAsRead(notification)">
-      
-      <div class="notification-icon">
-        {{ getIconForType(notification.type) }}
-      </div>
-      
+    <div class="notification-item" *ngFor="let notification of notifications" [class.unread]="!notification.isRead"
+      (click)="markAsRead(notification)">
+
+      <iconify-icon class="notification-icon" icon="{{ getIconForType(notification.type) }}"></iconify-icon>
+
       <div class="notification-content">
         <p class="notification-message">{{ notification.message }}</p>
         <span class="notification-time">{{ notification.createdAt | date:'medium' }}</span>
       </div>
-      
+
       <div class="notification-status">
         <div class="status-dot" *ngIf="!notification.isRead"></div>
       </div>
     </div>
-    
+
     <div class="empty-state" *ngIf="notifications.length === 0">
-      <div class="empty-icon">📭</div>
+      <iconify-icon class="empty-icon" icon="mdi:email-open-outline"></iconify-icon>
       <p>You have no notifications right now.</p>
     </div>
   </div>

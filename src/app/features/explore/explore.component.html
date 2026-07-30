@@ -2,19 +2,10 @@
   <h2>Explore & Discover Skills</h2>
 
   <div class="filter-bar">
-    <input
-      type="text"
-      placeholder="Search by skill (e.g. React)..."
-      [(ngModel)]="searchTerm"
-      (input)="onSearch()"
-      class="search-input"
-    />
+    <input type="text" placeholder="Search by skill (e.g. React)..." [(ngModel)]="searchTerm" (input)="onSearch()"
+      class="search-input" />
 
-    <select
-      [(ngModel)]="selectedTrackId"
-      (change)="onFilterByTrack()"
-      class="track-select"
-    >
+    <select [(ngModel)]="selectedTrackId" (change)="onFilterByTrack()" class="track-select">
       <option value="">All Tracks</option>
       <option *ngFor="let track of tracks" [value]="$any(track)._id || track.id">
         {{ track.name }}
@@ -26,6 +17,7 @@
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
   <div class="users-grid" *ngIf="!loading && !errorMessage">
+<<<<<<< HEAD
     <div
       class="user-card"
       *ngFor="let user of users"
@@ -58,6 +50,24 @@
             {{ $any(skill).skillName || $any(skill.skillId)?.name || skill.skillId }}
           </span>
         </div>
+=======
+    <div class="user-card" *ngFor="let user of users" (click)="goToUserDetails(user._id)">
+      <img [src]="user.avatarUrl" alt="Avatar" class="avatar" />
+      <h3>{{ user.name }}</h3>
+
+      <div class="skills-section" *ngIf="user.skillsToTeach?.length">
+        <p><strong>Can Teach:</strong></p>
+        <span class="badge teach" *ngFor="let skill of user.skillsToTeach">
+          {{ $any(skill).skillName || $any(skill.skillId)?.name || skill.skillId }}
+        </span>
+      </div>
+
+      <div class="skills-section" *ngIf="user.skillsToLearn?.length">
+        <p><strong>Wants to Learn:</strong></p>
+        <span class="badge learn" *ngFor="let skill of user.skillsToLearn">
+          {{ $any(skill).skillName || $any(skill.skillId)?.name || skill.skillId }}
+        </span>
+>>>>>>> 9add9ca0ff610da742c93717fa218c163e1b44f7
       </div>
     </div>
   </div>

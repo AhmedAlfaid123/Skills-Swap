@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
@@ -8,6 +8,7 @@ import { DashboardData, RecentRequest } from '../../models/dashboard';
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, RouterModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -23,12 +24,8 @@ export class DashboardComponent implements OnInit {
   }
 
   fetchDashboardData(): void {
-    // We provide some mock data if the API is not yet returning real data.
-    // Based on "Member 5" day-1 checklist to "build their routes against mock JSON".
-    this.loading = true;
     
-    // Simulate API call for now. In a real app, subscribe to the service.
-    // this.dashboardService.getDashboardData().subscribe({ ... });
+    this.loading = true;
     
     setTimeout(() => {
       this.dashboardData = {

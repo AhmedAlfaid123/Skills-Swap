@@ -1,155 +1,102 @@
 
 
 .explore-container {
-  padding: 40px 20px;
-  max-width: 1000px;
+  padding: 24px;
+  max-width: 1200px;
   margin: 0 auto;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: #1e293b;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
-h2 {
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 24px;
-  color: #0f172a;
-}
-
-/* Search Bar & Filter Section */
 .filter-bar {
   display: flex;
-  gap: 16px;
-  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
 .search-input {
-  flex: 1;
-  padding: 14px 18px;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  font-size: 1rem;
-  outline: none;
-  background-color: #ffffff;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.search-input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  flex: 1 1 280px;
+  min-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 14px;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .track-select {
-  width: 200px;
-  padding: 14px 18px;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  font-size: 1rem;
-  background-color: #ffffff;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  color: var(--color-text);
   cursor: pointer;
-  outline: none;
-  color: #334155;
-  transition: border-color 0.2s;
-}
-
-.track-select:focus {
-  border-color: #2563eb;
+  min-width: 180px;
 }
 
 /* Grid Layout */
 .users-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
-}
-
-/* User Card Styling */
-.user-card {
-  background: #f8fafc;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 16px;
-  padding: 24px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 16px;
 }
 
+.user-card {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  background: var(--color-card);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
 .user-card:hover {
-  border-color: #2563eb;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
-  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-.card-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-.user-card .avatar {
+.avatar {
   width: 64px;
   height: 64px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  border: 2px solid var(--color-border);
 }
 
-.user-card h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-/* Skills Section */
 .skills-section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-top: 10px;
 }
 
-.section-title {
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #1e3a8a;
-}
-
-.badges-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* Badges Styling */
 .badge {
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  font-weight: 600;
   display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin: 4px 6px 0 0;
 }
 
-.badge.teach, .badge.learn {
-  background-color: #e0f2fe;
-  color: #0284c7;
+.badge.teach {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
 }
 
-/* Loading & Error */
+.badge.learn {
+  background: #dcfce7;
+  color: #15803d;
+}
+
 .loading {
-  text-align: center;
+  color: var(--color-text-secondary);
   font-weight: 600;
-  color: #64748b;
-  padding: 20px;
 }
 
 .error {
   color: #dc2626;
-  background-color: #fef2f2;
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: 1px solid #fecaca;
+  font-weight: 600;
 }

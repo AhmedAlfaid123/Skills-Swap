@@ -1,22 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { DiscoveryService } from '../../services/discovery.service';
-import { User } from '../../models/user';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { DiscoveryService } from '../../../services/discovery.service';
+import { User } from '../../../models/user';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
-  selector: 'app-explore',
-  templateUrl: './explore.component.html',
-  styleUrls: ['./explore.component.css'],
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  selector: 'app-user-details',
+  templateUrl: './user-details.component.html',
+  styleUrls: ['./user-details.component.css'],
+  imports: [CommonModule, RouterLink]
 })
 
-
-
-export class ExploreComponent implements OnInit {
-  users: User[] = [];
+export class UserDetailsComponent implements OnInit {
+ 
+ user: User | null = null;
   tracks: { id: string; name: string }[] = [];
 
   searchTerm = '';
@@ -26,13 +25,13 @@ export class ExploreComponent implements OnInit {
   limit = 20;
   total = 0;
 
-  loading: boolean = false;
-  errorMessage: string = '';
+  loading = false;
+  errorMessage = '';
 
   constructor(
     private discoveryService: DiscoveryService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadTracks();
@@ -42,7 +41,9 @@ export class ExploreComponent implements OnInit {
   loadTracks(): void {
     this.discoveryService.getTracks().subscribe({
       next: (response) => (this.tracks = response.data),
-      error: () => { },
+      error: () => {
+       
+      },
     });
   }
 
@@ -97,8 +98,9 @@ export class ExploreComponent implements OnInit {
     this.router.navigate(['/users', userId]);
   }
 
+ 
   private applyResults(users: User[], total: number): void {
-    this.users = users;
+    this.user = users[0] || null;
     this.total = total;
     this.loading = false;
   }

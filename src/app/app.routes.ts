@@ -7,12 +7,14 @@ import { RequestsComponent } from './features/requests/requests.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { NotificationsComponent } from './features/notifications/notifications.component';
 import { ProfileComponent } from './features/profile/profile.component';
+import { ExploreComponent } from './features/explore/explore.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: homeComponent },
   { path: 'register', component: registerComponent },
   { path: 'login', component: loginComponent },
+  { path: 'explore', component: ExploreComponent},
   { path: 'matching', component: MatchingComponent },
   { path: 'requests', component: RequestsComponent },
   { path: 'dashboard', component: DashboardComponent },
