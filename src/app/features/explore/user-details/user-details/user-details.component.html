@@ -1,0 +1,46 @@
+<div class="user-details-container">
+  <p *ngIf="loading">Loading...</p>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+  <div *ngIf="user && !loading" class="profile-card">
+    <img [src]="user.avatarUrl || 'assets/default-avatar.png'" alt="avatar" />
+    <h2>{{ user.name }}</h2>
+    <p class="bio">{{ user.bio }}</p>
+
+    <div class="skills-section">
+      <h3>Skills to Teach</h3>
+      <ul>
+        <li *ngFor="let s of user.skillsToTeach">
+         
+          {{ $any(s).skillName || $any(s.skillId)?.name || s.skillId }} 
+          <span class="track-tag" *ngIf="$any(s).trackName || $any(s.trackId)?.name">
+            ({{ $any(s).trackName || $any(s.trackId)?.name }})
+          </span>
+        </li>
+      </ul>
+      <p *ngIf="!user.skillsToTeach || user.skillsToTeach.length === 0">None</p>
+    </div>
+
+    <div class="skills-section">
+      <h3>Skills to Learn</h3>
+      <ul>
+        <li *ngFor="let s of user.skillsToLearn">
+          {{ $any(s).skillName || $any(s.skillId)?.name || s.skillId }}
+          <span class="track-tag" *ngIf="$any(s).trackName || $any(s.trackId)?.name">
+            ({{ $any(s).trackName || $any(s.trackId)?.name }})
+          </span>
+        </li>
+      </ul>
+      <p *ngIf="!user.skillsToLearn || user.skillsToLearn.length === 0">None</p>
+    </div>
+
+   
+    <button 
+      class="request-btn" 
+      [routerLink]="['/requests/new']" 
+      [queryParams]="{ toUserId: $any(user)._id || $any(user).id }"
+    >
+      Send Swap Request
+    </button>
+  </div>
+</div>   
