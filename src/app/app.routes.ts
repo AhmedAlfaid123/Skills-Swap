@@ -8,6 +8,7 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { NotificationsComponent } from './features/notifications/notifications.component';
 import { ProfileComponent } from './features/profile/profile.component';
 import { ExploreComponent } from './features/explore/explore.component';
+import { UserDetailsComponent } from './features/explore/user-details/user-details.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'register', component: registerComponent },
   { path: 'login', component: loginComponent },
   { path: 'explore', component: ExploreComponent},
+  { path: 'users/:userId', component: UserDetailsComponent },
   { path: 'matching', component: MatchingComponent },
   { path: 'requests', component: RequestsComponent },
   { path: 'dashboard', component: DashboardComponent },
