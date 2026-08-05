@@ -15,6 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(routes),
-    { provide: API_BASE_URL, useValue: 'http://localhost:5000/api/matching' }
+    { provide: API_BASE_URL, useValue: 'http://localhost:5000/api' }
   ]
 };

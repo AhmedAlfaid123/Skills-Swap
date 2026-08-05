@@ -13,14 +13,25 @@
     </select>
   </div>
 
-  <div *ngIf="loading" class="loading">Loading...</div>
+  @if (loading) {
+  <div class="users-grid" aria-busy="true">
+    @for (skeleton of [1, 2, 3, 4, 5, 6]; track skeleton) {
+    <article class="skeleton-card" aria-hidden="true">
+      <div class="skeleton-row avatar"></div>
+      <div class="skeleton-row title"></div>
+      <div class="skeleton-row copy"></div>
+      <div class="skeleton-row copy short"></div>
+    </article>
+    }
+  </div>
+  }
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
   <div class="users-grid" *ngIf="!loading && !errorMessage">
     <div
       class="user-card"
       *ngFor="let user of users"
-      (click)="goToUserDetails(user._id)"
+      (click)="goToUserDetails($any(user).id)"
     >
       <div class="card-header">
         <img [src]="user.avatarUrl" alt="Avatar" class="avatar" />
@@ -34,7 +45,7 @@
             class="badge teach"
             *ngFor="let skill of user.skillsToTeach"
           >
-            {{ $any(skill).skillName || $any(skill.skillId)?.name || skill.skillId }}
+            {{ skill }}
           </span>
         </div>
       </div>
@@ -46,7 +57,7 @@
             class="badge learn"
             *ngFor="let skill of user.skillsToLearn"
           >
-            {{ $any(skill).skillName || $any(skill.skillId)?.name || skill.skillId }}
+            {{ skill }}
           </span>
         </div>
       </div>

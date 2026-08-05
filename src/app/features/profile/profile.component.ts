@@ -1,29 +1,13 @@
-import { Component, ElementRef, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, ElementRef, ViewChild, CUSTOM_ELEMENTS_SCHEMA, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface ProfileData {
-  name: string;
-  title: string;
-  location: string;
-  bio: string;
-  email: string;
-  phone: string;
-  languages: string;
-  availability: string;
-  joinedDate: string;
-  avatarUrl: string;
-  githubUrl: string;
-  twitterUrl: string;
-  discordUrl: string;
-  linkedinUrl: string;
-}
+import { ProfileService } from '../../services/profile.service';
+import { User } from '../../models/user';
 
 interface Skill {
   name: string;
   icon: string;
   color: string;
-  level?: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
 }
 
 interface Stat {
@@ -67,12 +51,6 @@ const TRACK_ICONS: Record<string, { icon: string; color: string }> = {
   Copywriting: { icon: 'lucide:hash', color: '#5F6472' }
 };
 
-const LEVEL_PCT: Record<string, number> = {
-  Beginner: 25,
-  Intermediate: 50,
-  Advanced: 75,
-  Expert: 100
-};
 
 @Component({
   selector: 'app-profile',
@@ -82,35 +60,23 @@ const LEVEL_PCT: Record<string, number> = {
   styleUrl: './profile.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   @ViewChild('avatarInput') avatarInput!: ElementRef<HTMLInputElement>;
 
-  profile: ProfileData = {
+  profile: User = {
     name: '',
-    title: '',
-    location: '',
     bio: '',
     email: '',
-    phone: '',
-    languages: '',
-    availability: 'Evenings & Weekends',
-    joinedDate: '',
     avatarUrl: 'https://api.dicebear.com/7.x/initials/svg?seed=U&backgroundColor=1A73E8&textColor=ffffff',
-    githubUrl: '',
-    twitterUrl: '',
-    discordUrl: '',
-    linkedinUrl: ''
+    skillsToTeach: [],
+    skillsToLearn: [],
+    joinedDate: ''
   };
 
-  availabilityOptions = ['Evenings & Weekends', 'Weekdays', 'Flexible', 'Weekends Only'];
-
   stats: Stat[] = [
-    { label: 'Skills', value: 0, icon: 'lucide:target', iconBg: '#EAF1FF', iconColor: '#1A73E8' },
-    { label: 'Swaps', value: 0, icon: 'lucide:handshake', iconBg: '#EAFBF3', iconColor: '#0F9D58' },
-    { label: 'Learning', value: 0, icon: 'lucide:book-open', iconBg: '#F3EEFF', iconColor: '#6C5CE7' }
+    { label: 'Skills to Teach', value: 0, icon: 'lucide:target', iconBg: '#EAF1FF', iconColor: '#1A73E8' },
+    { label: 'Skills to Learn', value: 0, icon: 'lucide:book-open', iconBg: '#F3EEFF', iconColor: '#6C5CE7' }
   ];
-
-  rating = 0;
 
   teachSkills: Skill[] = [];
   learnSkills: Skill[] = [];
@@ -129,9 +95,42 @@ export class ProfileComponent {
   toastVisible = false;
   toastMessage = '';
 
-  private profileSnapshot!: ProfileData;
+  private profileSnapshot!: User;
   private teachSnapshot: Skill[] = [];
   private learnSnapshot: Skill[] = [];
+
+  constructor(
+    private service: ProfileService,
+    private cdr: ChangeDetectorRef
+  ) { }
+
+  ngOnInit(): void {
+    this.getProfileData();
+  }
+
+  getProfileData(): void {
+    this.service.getProfileData().subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res;
+        this.profile = {
+          ...this.profile,
+          ...data,
+          skillsToTeach: data?.skillsToTeach ?? [],
+          skillsToLearn: data?.skillsToLearn ?? []
+        };
+        this.teachSkills = this.getSkills(this.profile.skillsToTeach);
+        this.learnSkills = this.getSkills(this.profile.skillsToLearn);
+        this.profileSnapshot = { ...this.profile };
+        this.stats[0].value = this.profile.skillsToTeach.length;
+        this.stats[1].value = this.profile.skillsToLearn.length;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.showToast('Unable to load profile data');
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
   get teachSuggestions(): string[] {
     return this.filterTracks(this.teachSearchQuery, this.teachSkills);
@@ -149,9 +148,6 @@ export class ProfileComponent {
     return TRACK_ICONS[name] || { icon: 'lucide:hash', color: '#5F6472' };
   }
 
-  levelPercent(level?: string): number {
-    return level ? LEVEL_PCT[level] : 0;
-  }
 
   enterProfileEdit(): void {
     this.profileSnapshot = { ...this.profile };
@@ -164,13 +160,37 @@ export class ProfileComponent {
   }
 
   saveProfileEdit(): void {
-    if (!this.hasProfileChanges) return;
-    this.isSavingProfile = true;
-    setTimeout(() => {
-      this.isSavingProfile = false;
+    if (!this.hasProfileChanges) {
       this.isEditingProfile = false;
-      this.showToast('Profile updated successfully');
-    }, 900);
+      return;
+    }
+
+    this.isSavingProfile = true;
+    this.service.updateProfile({
+      name: this.profile.name,
+      bio: this.profile.bio,
+      avatarUrl: this.profile.avatarUrl
+    }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res;
+        this.profile = {
+          ...this.profile,
+          ...data,
+          skillsToTeach: this.profile.skillsToTeach,
+          skillsToLearn: this.profile.skillsToLearn
+        };
+        this.profileSnapshot = { ...this.profile };
+        this.isSavingProfile = false;
+        this.isEditingProfile = false;
+        this.showToast('Profile updated successfully');
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.isSavingProfile = false;
+        this.showToast('Profile update failed');
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   enterSkillsEdit(): void {
@@ -187,17 +207,38 @@ export class ProfileComponent {
 
   confirmSkillsEdit(): void {
     this.isSavingSkills = true;
-    setTimeout(() => {
-      this.isSavingSkills = false;
-      this.isEditingSkills = false;
-      this.stats[0].value = this.teachSkills.length;
-      this.showToast('Skills updated successfully');
-    }, 900);
+
+    const payload = {
+      skillsToTeach: this.teachSkills.map(skill => skill.name),
+      skillsToLearn: this.learnSkills.map(skill => skill.name)
+    };
+
+    this.service.updateSkills(payload).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res;
+        this.profile.skillsToTeach = data.skillsToTeach ?? this.profile.skillsToTeach;
+        this.profile.skillsToLearn = data.skillsToLearn ?? this.profile.skillsToLearn;
+        this.teachSkills = this.getSkills(this.profile.skillsToTeach);
+        this.learnSkills = this.getSkills(this.profile.skillsToLearn);
+        this.profileSnapshot = { ...this.profile };
+        this.stats[0].value = this.teachSkills.length;
+        this.stats[1].value = this.learnSkills.length;
+        this.isSavingSkills = false;
+        this.isEditingSkills = false;
+        this.showToast('Skills updated successfully');
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.isSavingSkills = false;
+        this.showToast('Failed to save skills');
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   addTeachSkill(name: string): void {
     const meta = this.trackMeta(name);
-    this.teachSkills.push({ name, icon: meta.icon, color: meta.color, level: 'Intermediate' });
+    this.teachSkills.push({ name, icon: meta.icon, color: meta.color });
     this.teachSearchQuery = '';
     this.teachDropdownOpen = false;
   }
@@ -236,17 +277,19 @@ export class ProfileComponent {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
-      this.profile.avatarUrl = reader.result as string;
+      this.profile = { ...this.profile, avatarUrl: reader.result as string };
       this.showToast('Profile picture updated');
+      this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
   }
 
   removeAvatar(): void {
     const seed = encodeURIComponent(this.profile.name || 'User');
-    this.profile.avatarUrl = `https://api.dicebear.com/7.x/initials/svg?seed=${seed}&backgroundColor=1A73E8&textColor=ffffff`;
+    this.profile = { ...this.profile, avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${seed}&backgroundColor=1A73E8&textColor=ffffff` };
     this.closeAvatarMenu();
     this.showToast('Profile picture removed');
+    this.cdr.detectChanges();
   }
 
   shareProfile(): void {
@@ -277,6 +320,35 @@ export class ProfileComponent {
     return Object.keys(TRACK_ICONS)
       .filter(t => !existingNames.includes(t) && t.toLowerCase().includes(q))
       .slice(0, 8);
+  }
+
+  private getSkills(skillRefs: any[]): Skill[] {
+    if (!skillRefs || !Array.isArray(skillRefs)) {
+      return [];
+    }
+
+    return skillRefs
+      .map((ref) => {
+        let name = '';
+
+        if (typeof ref === 'string') {
+          name = ref;
+        } else if (ref.skillName) {
+          name = ref.skillName;
+        } else if (ref.name) {
+          name = ref.name;
+        } else if (ref.skillId) {
+          name = typeof ref.skillId === 'string' ? ref.skillId : ref.skillId.name || '';
+        }
+
+        if (!name) {
+          return null;
+        }
+
+        const meta = this.trackMeta(name);
+        return { name, icon: meta.icon, color: meta.color };
+
+      }).filter((skill): skill is Skill => !!skill);
   }
 
   private profileUrl(): string {

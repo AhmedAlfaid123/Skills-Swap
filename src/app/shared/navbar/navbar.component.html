@@ -9,21 +9,42 @@
       <div class="navbar-links">
         <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
         <a routerLink="/explore" routerLinkActive="active" class="nav-link">Explore</a>
+        @if(isLoggedIn) {
         <a routerLink="/matching" routerLinkActive="active" class="nav-link">Matching</a>
         <a routerLink="/requests" routerLinkActive="active" class="nav-link">Requests</a>
         <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
+        }
       </div>
     </div>
 
     <div class="navbar-actions">
-      <a routerLink="/notifications" class="notification-bell" [class.has-unread]="unreadNotificationsCount > 0">
-        <iconify-icon icon="mdi:bell-outline" class="bell-icon"></iconify-icon>
-        <span class="unread-dot" *ngIf="unreadNotificationsCount > 0">{{ unreadNotificationsCount }}</span>
-      </a>
-      
-      <div class="user-menu">
-        <a routerLink="/profile" class="user-avatar">Me</a>
-      </div>
+      @if(isLoggedIn) {
+      <ng-container>
+        <a routerLink="/notifications" class="notification-bell" [class.has-unread]="unreadNotificationsCount > 0">
+          <iconify-icon icon="mdi:bell-outline" class="bell-icon"></iconify-icon>
+          <span class="unread-dot" *ngIf="unreadNotificationsCount > 0">{{ unreadNotificationsCount }}</span>
+        </a>
+
+        <div class="user-menu">
+          <a routerLink="/profile" class="user-avatar">
+            @if(userAvatar) {
+            <img [src]="userAvatar" alt="Avatar" />
+            }
+            @else {
+            <iconify-icon icon="mdi:account-circle" class="default-avatar"></iconify-icon>
+            }
+          </a>
+        </div>
+      </ng-container>
+      }
+      @else {
+      <ng-container>
+        <div class="auth-buttons">
+          <a routerLink="/login" class="btn-login">Login</a>
+          <a routerLink="/register" class="btn-register">Register</a>
+        </div>
+      </ng-container>
+      }
     </div>
   </div>
 </nav>

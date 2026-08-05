@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { RequestCardComponent } from './request-card/request-card.component';
 import { RequestService } from './request.service';
@@ -26,7 +26,10 @@ export class RequestsComponent implements OnInit, OnDestroy {
   protected toastMessage = '';
   protected toastVisible = false;
 
-  constructor(private readonly requestService: RequestService) { }
+  constructor(
+    private readonly requestService: RequestService,
+    private readonly cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.loadSentRequests();
@@ -40,6 +43,7 @@ export class RequestsComponent implements OnInit, OnDestroy {
 
   setActiveTab(tab: 'sent' | 'received'): void {
     this.activeTab = tab;
+    this.cdr.detectChanges();
   }
 
   loadSentRequests(): void {
@@ -54,10 +58,12 @@ export class RequestsComponent implements OnInit, OnDestroy {
           this.sentRequests = requests;
           this.sentLoading = false;
           this.sentError = '';
+          this.cdr.detectChanges();
         },
         error: (error) => {
           this.sentLoading = false;
           this.sentError = this.getErrorMessage(error, 'We could not load sent requests right now.');
+          this.cdr.detectChanges();
         }
       });
   }
@@ -74,10 +80,12 @@ export class RequestsComponent implements OnInit, OnDestroy {
           this.receivedRequests = requests;
           this.receivedLoading = false;
           this.receivedError = '';
+          this.cdr.detectChanges();
         },
         error: (error) => {
           this.receivedLoading = false;
           this.receivedError = this.getErrorMessage(error, 'We could not load received requests right now.');
+          this.cdr.detectChanges();
         }
       });
   }
@@ -104,9 +112,11 @@ export class RequestsComponent implements OnInit, OnDestroy {
           );
           this.receivedError = '';
           this.showToast('Swap request accepted.');
+          this.cdr.detectChanges();
         },
         error: (error) => {
           this.receivedError = this.getErrorMessage(error, 'We could not accept that request. Please try again.');
+          this.cdr.detectChanges();
         }
       });
   }
@@ -124,9 +134,11 @@ export class RequestsComponent implements OnInit, OnDestroy {
           );
           this.receivedError = '';
           this.showToast('Swap request rejected.');
+          this.cdr.detectChanges();
         },
         error: (error) => {
           this.receivedError = this.getErrorMessage(error, 'We could not reject that request. Please try again.');
+          this.cdr.detectChanges();
         }
       });
   }
@@ -144,9 +156,11 @@ export class RequestsComponent implements OnInit, OnDestroy {
           );
           this.sentError = '';
           this.showToast('Swap request cancelled.');
+          this.cdr.detectChanges();
         },
         error: (error) => {
           this.sentError = this.getErrorMessage(error, 'We could not cancel that request. Please try again.');
+          this.cdr.detectChanges();
         }
       });
   }
@@ -154,9 +168,11 @@ export class RequestsComponent implements OnInit, OnDestroy {
   private showToast(message: string): void {
     this.toastMessage = message;
     this.toastVisible = true;
+    this.cdr.detectChanges();
 
     window.setTimeout(() => {
       this.toastVisible = false;
+      this.cdr.detectChanges();
     }, 2800);
   }
 

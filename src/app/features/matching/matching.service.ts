@@ -58,7 +58,7 @@ export class MatchingService {
     const learnSkills = (match.skillsToLearn ?? []).map((skill) => skill.name);
 
     return {
-      userId: user._id,
+      userId: user._id ?? '',
       userName: user.name,
       bio: user.bio || 'Open to exchanging practical knowledge and project experience.',
       avatarUrl: user.avatarUrl,

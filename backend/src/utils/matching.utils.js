@@ -17,7 +17,7 @@ function computeMatch(me, otherUser) {
     isMutual: theyCanTeachYou.length > 0 && youCanTeachThem.length > 0,
   };
 }
- 
+
 module.exports = { findOverlap, computeMatch };
 
 

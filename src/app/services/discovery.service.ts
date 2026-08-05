@@ -34,7 +34,7 @@ export interface UserProfileResponse {
   data: UserProfile;
 }
 
-const API_ROOT = 'http://localhost:5000/api';
+const API_ROOT = 'http://localhost:5000/api/discovery';
 
 @Injectable({ providedIn: 'root' })
 export class DiscoveryService {

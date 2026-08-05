@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const discoveryController = require('../controllers/discovery.controller');
+const discoveryController = require('../controllers/discoveryController');
  
 
  

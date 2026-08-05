@@ -5,21 +5,68 @@
                 <h1>Start swaping skills with others</h1>
                 <p>Gain new skills, share your knowledge with the community, and begin your learning journey by swaping
                     skills with people like you.</p>
-                <a routerLink="/register">Register Now</a>
+                @if (isLoggedIn) {
+                <div class="hero-actions">
+                    <a routerLink="/profile" class="btn profile-btn">View Profile</a>
+                </div>
+                } @else {
+                <div class="hero-actions">
+                    <a routerLink="/register" class="btn register-btn">Register Now</a>
+                    <a routerLink="/login" class="btn login-btn">Login</a>
+                </div>
+                }
             </div>
             <img src="/skillswap.png" alt="Skill Swap" class="hero-image" />
         </div>
     </div>
 
     <div class="features">
+        @for(feature of features; track $index) {
         <div class="feature-card">
-            <h3>Meaningful Skill Swap</h3>
-            <p>Show your skills and learn new ones from other people.</p>
+            <iconify-icon [icon]="feature.icon" class="feature-icon"></iconify-icon>
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
         </div>
+        }
+    </div>
 
-        <div class="feature-card">
-            <h3>Continuous Growth</h3>
-            <p>Be part of a community focused on learning and personal development.</p>
+    <div class="how-it-section">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Skill Swap is designed to be simple and effective. Follow these three steps to start
+            exchanging knowledge with the community.</p>
+
+        <div class="steps-container">
+            @for (step of howItSteps; track $index) {
+            <div class="step-card">
+                <div class="step-number">{{ step.step }}</div>
+                <div class="step-content">
+                    <iconify-icon [icon]="step.icon" class="step-icon"></iconify-icon>
+                    <h3 class="step-title">{{ step.title }}</h3>
+                    <p class="step-description">{{ step.description }}</p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Everything you need to know about Skill Swap. Can't find what you're looking for?
+            Reach out to our community.</p>
+
+        <div class="faq-container">
+            @for (faq of faqs; track $index) {
+            <div class="faq-item" [class.expanded]="expandedIndex === $index">
+                <button type="button" class="faq-question" (click)="toggleFaq($index)">
+                    {{ faq.question }}
+                    <iconify-icon [icon]="expandedIndex === $index ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                        class="faq-toggle-icon"></iconify-icon>
+                </button>
+                <div class="faq-answer-wrapper" [class.open]="expandedIndex === $index">
+                    <p class="faq-answer">{{ faq.answer }}</p>
+                </div>
+            </div>
+            }
         </div>
     </div>
 </section>

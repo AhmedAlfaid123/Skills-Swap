@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { DiscoveryService } from '../../services/discovery.service';
 import { User } from '../../models/user';
@@ -31,7 +31,8 @@ export class ExploreComponent implements OnInit {
 
   constructor(
     private discoveryService: DiscoveryService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -41,7 +42,10 @@ export class ExploreComponent implements OnInit {
 
   loadTracks(): void {
     this.discoveryService.getTracks().subscribe({
-      next: (response) => (this.tracks = response.data),
+      next: (response) => {
+        this.tracks = response.data;
+        this.cdr.detectChanges();
+      },
       error: () => { },
     });
   }
@@ -101,10 +105,12 @@ export class ExploreComponent implements OnInit {
     this.users = users;
     this.total = total;
     this.loading = false;
+    this.cdr.detectChanges();
   }
 
   private applyError(message: string): void {
     this.errorMessage = message;
     this.loading = false;
+    this.cdr.detectChanges();
   }
 }

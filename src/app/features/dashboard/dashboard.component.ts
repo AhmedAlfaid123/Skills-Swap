@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
@@ -17,7 +17,10 @@ export class DashboardComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(
+    private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.fetchDashboardData();
@@ -38,6 +41,7 @@ export class DashboardComponent implements OnInit {
         ]
       };
       this.loading = false;
+      this.cdr.detectChanges();
     }, 500);
   }
 

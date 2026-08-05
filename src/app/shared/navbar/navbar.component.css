@@ -143,10 +143,52 @@
   justify-content: center;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .user-avatar:hover {
   box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-login {
+  text-decoration: none;
+  color: var(--color-text);
+  padding: 0.3rem 0.9rem;
+  border-radius: 25px;
+  border: 2px solid var(--color-text-secondary);
+  font-weight: 500;
+  transition: border-color 0.2s ease;
+}
+
+.btn-login:hover {
+  border-color: var(--color-accent);
+}
+
+.btn-register {
+  text-decoration: none;
+  background: var(--color-accent);
+  color: white;
+  padding: 0.3rem 0.9rem;
+  border-radius: 25px;
+  border: 2px solid var(--color-accent);
+  font-weight: 500;
+  transition: box-shadow 0.2s ease;
+}
+
+.btn-register:hover {
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
 }

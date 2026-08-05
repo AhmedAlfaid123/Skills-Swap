@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { User } from '../../../models/user';
 import { DiscoveryService } from '../../../services/discovery.service';
@@ -18,7 +18,8 @@ export class UserDetailsComponent implements OnInit {
 
   constructor(
     private readonly discoveryService: DiscoveryService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +34,7 @@ export class UserDetailsComponent implements OnInit {
       next: (response) => {
         this.user = response.data as unknown as User;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => this.applyError('Failed to load this user profile.')
     });
@@ -41,5 +43,6 @@ export class UserDetailsComponent implements OnInit {
   private applyError(message: string): void {
     this.errorMessage = message;
     this.loading = false;
+    this.cdr.detectChanges();
   }
 }

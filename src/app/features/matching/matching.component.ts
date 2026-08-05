@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FilterBarComponent } from './filter-bar/filter-bar';
@@ -34,7 +34,8 @@ export class MatchingComponent implements OnInit, OnDestroy {
   constructor(
     private readonly matchingService: MatchingService,
     private readonly requestService: RequestService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -61,12 +62,14 @@ export class MatchingComponent implements OnInit, OnDestroy {
           this.trackOptions = filterOptions.tracks;
           this.skillOptions = filterOptions.skills;
           this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (error) => {
           this.loading = false;
           this.errorMessage = error.name === 'TimeoutError' || error.status === 0
             ? 'The backend is not running on localhost:5000. Start it, then retry.'
             : error.error?.message ?? 'We could not load your matches right now. Please try again.';
+          this.cdr.detectChanges();
         }
       });
   }
@@ -79,6 +82,7 @@ export class MatchingComponent implements OnInit, OnDestroy {
     };
 
     this.visibleMatches = this.matchingService.applyFilters(this.allMatches, filters);
+    this.cdr.detectChanges();
   }
 
   onSearchTermChange(searchTerm: string): void {
@@ -106,6 +110,7 @@ export class MatchingComponent implements OnInit, OnDestroy {
       trackName: 'all',
       skillName: 'all'
     });
+    this.cdr.detectChanges();
   }
 
   handleViewProfile(userId: string): void {
@@ -130,6 +135,7 @@ export class MatchingComponent implements OnInit, OnDestroy {
           this.errorMessage = error.status === 401
             ? 'Please log in before sending a swap request.'
             : error.error?.message ?? 'We could not send that swap request. Please retry.';
+          this.cdr.detectChanges();
         }
       });
   }
@@ -141,9 +147,11 @@ export class MatchingComponent implements OnInit, OnDestroy {
   private showToast(message: string): void {
     this.toastMessage = message;
     this.toastVisible = true;
+    this.cdr.detectChanges();
 
     window.setTimeout(() => {
       this.toastVisible = false;
+      this.cdr.detectChanges();
     }, 2800);
   }
 }
