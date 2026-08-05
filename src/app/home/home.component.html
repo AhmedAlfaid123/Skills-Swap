@@ -16,33 +16,24 @@
                 </div>
                 }
             </div>
-            <img src="/skillswap.png" alt="Skill Swap" class="hero-image" />
+            <img src="/hero.png" alt="Skill Swap" class="hero-image" />
         </div>
     </div>
 
-    <div class="features">
-        @for(feature of features; track $index) {
-        <div class="feature-card">
-            <iconify-icon [icon]="feature.icon" class="feature-icon"></iconify-icon>
-            <h3>{{ feature.title }}</h3>
-            <p>{{ feature.description }}</p>
-        </div>
-        }
-    </div>
+    <div class="features-section">
+        <h2 class="section-title">How Skill Swap Works</h2>
+        <p class="section-subtitle">Skill Swap is designed to be simple and effective. Exchange knowledge with the community in three easy steps.</p>
 
-    <div class="how-it-section">
-        <h2 class="section-title">How It Works</h2>
-        <p class="section-subtitle">Skill Swap is designed to be simple and effective. Follow these three steps to start
-            exchanging knowledge with the community.</p>
-
-        <div class="steps-container">
-            @for (step of howItSteps; track $index) {
-            <div class="step-card">
-                <div class="step-number">{{ step.step }}</div>
-                <div class="step-content">
-                    <iconify-icon [icon]="step.icon" class="step-icon"></iconify-icon>
-                    <h3 class="step-title">{{ step.title }}</h3>
-                    <p class="step-description">{{ step.description }}</p>
+        <div class="feature-rows">
+            @for (feature of features; track $index) {
+            <div class="feature-row" [class.reverse]="$index % 2 !== 0">
+                <div class="feature-text">
+                    <span class="feature-badge">Step 0{{ $index + 1 }}</span>
+                    <h3>{{ feature.title }}</h3>
+                    <p>{{ feature.description }}</p>
+                </div>
+                <div class="feature-image-wrapper">
+                    <img [src]="feature.image" [alt]="feature.title" class="feature-image" />
                 </div>
             </div>
             }

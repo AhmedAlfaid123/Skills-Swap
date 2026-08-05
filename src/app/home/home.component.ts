@@ -7,6 +7,7 @@ interface HowItStep {
     title: string;
     description: string;
     icon: string;
+    image: string;
 }
 
 interface FaqItem {
@@ -17,7 +18,12 @@ interface FaqItem {
 interface FeatureItem {
     title: string;
     description: string;
-    icon: string;
+    image: string;
+}
+
+interface FaqItem {
+    question: string;
+    answer: string;
 }
 
 @Component({
@@ -41,40 +47,19 @@ export class homeComponent {
 
     features: FeatureItem[] = [
         {
-            title: 'Meaningful Skill Swap',
-            description: 'Show your skills and learn new ones from other people.',
-            icon: 'mdi:swap-horizontal'
+            title: 'Learn New Skills',
+            description: 'Discover skills you want to master and learn directly from experienced peers in our community.',
+            image: '/learnsec.png'
         },
         {
-            title: 'Continuous Growth',
-            description: 'Be part of a community focused on learning and personal development.',
-            icon: 'mdi:trending-up'
+            title: 'Share Your Expertise',
+            description: 'Offer your knowledge to others, help fellow learners grow, and refine your own skills through teaching.',
+            image: '/sharesec.png'
         },
         {
-            title: 'Global Community',
-            description: 'Connect with learners and experts from around the world.',
-            icon: 'mdi:earth'
-        }
-    ];
-
-    howItSteps: HowItStep[] = [
-        {
-            step: 1,
-            title: 'Create Your Profile',
-            description: 'Sign up and tell us what skills you can teach and what you want to learn.',
-            icon: 'mdi:account-plus-outline'
-        },
-        {
-            step: 2,
-            title: 'Discover Matches',
-            description: 'Browse the community to find people with complementary skills.',
-            icon: 'mdi:magnify'
-        },
-        {
-            step: 3,
-            title: 'Swap & Grow',
-            description: 'Send a swap request, connect with your match, and start learning together.',
-            icon: 'mdi:handshake-outline'
+            title: 'Connect & Swap',
+            description: 'Find partners with complementary skills, send swap requests, and build meaningful learning connections.',
+            image: '/connectsec.png'
         }
     ];
 

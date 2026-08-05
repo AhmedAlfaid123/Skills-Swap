@@ -31,9 +31,10 @@
   gap: 12px;
 }
 
-.brand-icon {
-  font-size: 1.5rem;
-  color: var(--color-accent);
+.brand-logo {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
 }
 
 .brand-text {
