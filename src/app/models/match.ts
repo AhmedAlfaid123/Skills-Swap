@@ -18,7 +18,18 @@ export interface MatchViewModel {
   trackName: string;
   teachSkills: string[];
   learnSkills: string[];
+  teachSkillOptions: MatchSkillOption[];
+  learnSkillOptions: MatchSkillOption[];
   matchPercentage: number;
+}
+
+export interface MatchSkillOption {
+  id: string;
+  name: string;
+}
+
+export interface MatchRequestSelection {
+  match: MatchViewModel;
   teachSkillId: string;
   learnSkillId: string;
 }
