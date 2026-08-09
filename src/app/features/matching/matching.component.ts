@@ -5,7 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { FilterBarComponent } from './filter-bar/filter-bar';
 import { MatchCardComponent } from './match-card/match-card.component';
 import { MatchingService } from './matching.service';
-import { FilterOption, MatchFilters, MatchViewModel } from '../../models/match';
+import { FilterOption, MatchFilters, MatchRequestSelection, MatchViewModel } from '../../models/match';
 import { RequestService } from '../requests/request.service';
 
 
@@ -117,14 +117,16 @@ export class MatchingComponent implements OnInit, OnDestroy {
     void this.router.navigate(['/users', userId]);
   }
 
-  handleSendRequest(match: MatchViewModel): void {
-    if (!match.teachSkillId || !match.learnSkillId) {
+  handleSendRequest(selection: MatchRequestSelection): void {
+    const { match, teachSkillId, learnSkillId } = selection;
+
+    if (!teachSkillId || !learnSkillId) {
       this.showToast('This match is missing a requestable skill pair.');
       return;
     }
 
     this.requestService
-      .sendRequest({ toUser: match.userId, teachSkillId: match.teachSkillId, learnSkillId: match.learnSkillId })
+      .sendRequest({ toUser: match.userId, teachSkillId, learnSkillId })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
