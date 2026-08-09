@@ -31,21 +31,22 @@
     <div
       class="user-card"
       *ngFor="let user of users"
-      (click)="goToUserDetails($any(user).id)"
+      (click)="goToUserDetails($any(user)._id || $any(user).id)"
     >
       <div class="card-header">
-        <img [src]="user.avatarUrl" alt="Avatar" class="avatar" />
+        @if (user.avatarUrl) {
+          <img [src]="user.avatarUrl" [alt]="user.name" class="avatar" (error)="useDefaultAvatar($event)" />
+        } @else {
+          <span class="avatar avatar-fallback">{{ getAvatarLabel(user.name) }}</span>
+        }
         <h3>{{ user.name }}</h3>
       </div>
 
       <div class="skills-section" *ngIf="user.skillsToTeach.length">
         <p class="section-title">Can Teach:</p>
         <div class="badges-container">
-          <span
-            class="badge teach"
-            *ngFor="let skill of user.skillsToTeach"
-          >
-            {{ skill }}
+          <span class="badge teach" *ngFor="let skill of user.skillsToTeach">
+            {{ getSkillName(skill) }}
           </span>
         </div>
       </div>
@@ -53,11 +54,8 @@
       <div class="skills-section" *ngIf="user.skillsToLearn.length">
         <p class="section-title">Wants to Learn:</p>
         <div class="badges-container">
-          <span
-            class="badge learn"
-            *ngFor="let skill of user.skillsToLearn"
-          >
-            {{ skill }}
+          <span class="badge learn" *ngFor="let skill of user.skillsToLearn">
+            {{ getSkillName(skill) }}
           </span>
         </div>
       </div>
