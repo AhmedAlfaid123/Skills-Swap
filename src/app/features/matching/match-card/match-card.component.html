@@ -23,29 +23,48 @@
             <dd>{{ match.trackName }}</dd>
         </div>
         <div>
-            <dt>Skills To Teach</dt>
+            <dt>They Can Teach You</dt>
             <dd>
                 <div class="chip-list">
                     @for (skill of match.teachSkills; track skill) {
-                        <span class="chip">{{ skill }}</span>
+                        <span class="chip">{{ $any(skill).skillName || $any(skill).name || skill }}</span>
                     }
                 </div>
             </dd>
         </div>
         <div>
-            <dt>Skills To Learn</dt>
+            <dt>They Want To Learn</dt>
             <dd>
                 <div class="chip-list">
                     @for (skill of match.learnSkills; track skill) {
-                        <span class="chip chip-muted">{{ skill }}</span>
+                        <span class="chip chip-muted">{{ $any(skill).skillName || $any(skill).name || skill }}</span>
                     }
                 </div>
             </dd>
         </div>
     </dl>
 
+    <div class="skill-selection">
+        <label>
+            You teach
+            <select [(ngModel)]="selectedTeachSkillId">
+                @for (skill of match.learnSkillOptions; track skill.id) {
+                    <option [value]="skill.id">{{ skill.name }}</option>
+                }
+            </select>
+        </label>
+        <label>
+            You learn
+            <select [(ngModel)]="selectedLearnSkillId">
+                @for (skill of match.teachSkillOptions; track skill.id) {
+                    <option [value]="skill.id">{{ skill.name }}</option>
+                }
+            </select>
+        </label>
+    </div>
+
     <div class="card-actions">
         <button type="button" class="secondary-button" (click)="viewProfile.emit(match.userId)">View Profile</button>
-        <button type="button" class="primary-button" (click)="sendSwapRequest.emit(match)">Send Swap Request</button>
+        <button type="button" class="primary-button" (click)="sendRequest()">Send Swap Request</button>
     </div>
 </article>
