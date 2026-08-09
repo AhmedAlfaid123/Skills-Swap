@@ -65,9 +65,9 @@ export class MatchingService {
       trackName,
       teachSkills,
       learnSkills,
+      teachSkillOptions: (match.skillsToTeach ?? []).map((skill) => ({ id: skill._id, name: skill.name })),
+      learnSkillOptions: (match.skillsToLearn ?? []).map((skill) => ({ id: skill._id, name: skill.name })),
       matchPercentage: Math.max(0, Math.min(100, Math.round(match.matchPercentage))),
-      teachSkillId: match.skillsToTeach?.[0]?._id ?? '',
-      learnSkillId: match.skillsToLearn?.[0]?._id ?? ''
     };
   }
 }
