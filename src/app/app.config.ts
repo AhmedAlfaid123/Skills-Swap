@@ -11,6 +11,10 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(),
     provideRouter(routes),
+<<<<<<< Updated upstream
     { provide: API_BASE_URL, useValue: '/api/matching' }
+=======
+    { provide: API_BASE_URL, useValue: 'http://localhost:5000/api' }
+>>>>>>> Stashed changes
   ]
 };
