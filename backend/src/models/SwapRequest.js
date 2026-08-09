@@ -17,5 +17,13 @@ const swapRequestSchema = new mongo.Schema(
     }
 );
 
+swapRequestSchema.index(
+    { fromUser: 1, toUser: 1, teachSkillId: 1, learnSkillId: 1 },
+    {
+        unique: true,
+        partialFilterExpression: { status: "pending" }
+    }
+);
+
 const SwapRequest = mongo.model("SwapRequest", swapRequestSchema);
 module.exports = SwapRequest;
