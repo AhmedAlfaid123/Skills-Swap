@@ -101,6 +101,43 @@ export class ExploreComponent implements OnInit {
     this.router.navigate(['/users', userId]);
   }
 
+  getSkillName(skill: unknown): string {
+    if (typeof skill === 'string') {
+      return skill;
+    }
+
+    if (!skill || typeof skill !== 'object') {
+      return 'Skill';
+    }
+
+    const skillData = skill as Record<string, unknown>;
+    const directName = skillData['skillName'] ?? skillData['name'];
+
+    if (typeof directName === 'string' && directName.trim()) {
+      return directName;
+    }
+
+    const nestedSkill = skillData['skillId'];
+    if (nestedSkill && typeof nestedSkill === 'object') {
+      const nestedName = (nestedSkill as Record<string, unknown>)['name'];
+      if (typeof nestedName === 'string' && nestedName.trim()) {
+        return nestedName;
+      }
+    }
+
+    return 'Skill';
+  }
+
+  getAvatarLabel(name: string): string {
+    return name.charAt(0).toUpperCase();
+  }
+
+  useDefaultAvatar(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    image.onerror = null;
+    image.src = '/logo.png';
+  }
+
   private applyResults(users: User[], total: number): void {
     this.users = users;
     this.total = total;
