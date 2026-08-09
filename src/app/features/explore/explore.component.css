@@ -69,6 +69,15 @@
   border: 2px solid var(--color-border);
 }
 
+.avatar-fallback {
+  display: grid;
+  place-items: center;
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
 .skills-section {
   margin-top: 10px;
 }
