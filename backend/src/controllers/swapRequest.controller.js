@@ -196,34 +196,34 @@ async function getMatchingUsers(req, res) {
             const candidateTeachIds = getSkillIdSet(candidateUser.skillsToTeach);
             const candidateLearnIds = getSkillIdSet(candidateUser.skillsToLearn);
 
-            const teachOverlapRefs = buildMatchedSkillDocs(
+            const currentUserTeachSkills = buildMatchedSkillDocs(
                 currentUser.skillsToTeach || [],
                 candidateLearnIds,
                 maps.skillsById,
                 maps.tracksById
             );
 
-            const learnOverlapRefs = buildMatchedSkillDocs(
+            const currentUserLearnSkills = buildMatchedSkillDocs(
                 currentUser.skillsToLearn || [],
                 candidateTeachIds,
                 maps.skillsById,
                 maps.tracksById
             );
 
-            if (teachOverlapRefs.length === 0 || learnOverlapRefs.length === 0) {
+            if (currentUserTeachSkills.length === 0 || currentUserLearnSkills.length === 0) {
                 return null;
             }
 
-            const representativeSkill = teachOverlapRefs[0] || learnOverlapRefs[0];
+            const representativeSkill = currentUserLearnSkills[0] || currentUserTeachSkills[0];
             const representativeTrack = representativeSkill ? maps.tracksById.get(toStringId(representativeSkill.trackId?._id || representativeSkill.trackId)) : null;
             const coverage = currentUser.skillsToTeach.length + currentUser.skillsToLearn.length;
-            const matchPercentage = coverage === 0 ? 0 : Math.min(100, Math.round(((teachOverlapRefs.length + learnOverlapRefs.length) / coverage) * 100));
+            const matchPercentage = coverage === 0 ? 0 : Math.min(100, Math.round(((currentUserTeachSkills.length + currentUserLearnSkills.length) / coverage) * 100));
 
             return {
                 user: publicUser(candidateUser),
                 track: publicTrack(representativeTrack),
-                skillsToTeach: teachOverlapRefs,
-                skillsToLearn: learnOverlapRefs,
+                skillsToTeach: currentUserLearnSkills,
+                skillsToLearn: currentUserTeachSkills,
                 matchPercentage
             };
         })
@@ -280,13 +280,23 @@ async function sendRequest(req, res) {
         return conflict(res, "A pending request for this skill pair already exists.");
     }
 
-    const request = await SwapRequest.create({
-        fromUser: getObjectId(currentUserId),
-        toUser: getObjectId(toUser),
-        teachSkillId: getObjectId(teachSkillId),
-        learnSkillId: getObjectId(learnSkillId),
-        status: STATUS.pending
-    });
+    let request;
+
+    try {
+        request = await SwapRequest.create({
+            fromUser: getObjectId(currentUserId),
+            toUser: getObjectId(toUser),
+            teachSkillId: getObjectId(teachSkillId),
+            learnSkillId: getObjectId(learnSkillId),
+            status: STATUS.pending
+        });
+    } catch (error) {
+        if (error?.code === 11000) {
+            return conflict(res, "A pending request for this skill pair already exists.");
+        }
+
+        throw error;
+    }
 
     const maps = await loadReferenceMaps(
         new Set([currentUserId, toStringId(toUser)]),
@@ -373,6 +383,19 @@ async function updateRequestStatus(req, res, nextStatus) {
 
     if (request.status !== STATUS.pending) {
         return conflict(res, `This request has already been ${request.status}.`);
+    }
+
+    if (nextStatus === STATUS.accepted) {
+        const isValidPair = await verifyRequestPair(
+            toStringId(request.fromUser),
+            toStringId(request.toUser),
+            toStringId(request.teachSkillId),
+            toStringId(request.learnSkillId)
+        );
+
+        if (!isValidPair) {
+            return conflict(res, "This swap is no longer valid because one or both users changed their skills.");
+        }
     }
 
     request.status = nextStatus;
