@@ -9,9 +9,10 @@
       <div class="navbar-links">
         <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
         <a routerLink="/explore" routerLinkActive="active" class="nav-link">Explore</a>
-        @if(isLoggedIn) {
         <a routerLink="/matching" routerLinkActive="active" class="nav-link">Matching</a>
         <a routerLink="/requests" routerLinkActive="active" class="nav-link">Requests</a>
+        @if(isLoggedIn) {
+        <a routerLink="/profile" routerLinkActive="active" class="nav-link">Profile</a>
         <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
         }
       </div>
