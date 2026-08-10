@@ -11,7 +11,6 @@
 }
 
 .request-card:hover {
-  transform: translateY(-4px);
   border-color: rgba(26, 115, 232, 0.28);
   box-shadow: 0 18px 40px rgba(32, 33, 36, 0.1);
 }
@@ -103,7 +102,7 @@
   font: inherit;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease;
+  transition: background-color 160ms ease, border-color 160ms ease;
 }
 
 .secondary-button {
@@ -121,11 +120,6 @@
   border-color: #d93025;
   background: rgba(217, 48, 37, 0.08);
   color: #d93025;
-}
-
-.secondary-button:hover,
-.primary-button:hover {
-  transform: translateY(-1px);
 }
 
 .secondary-button:hover {

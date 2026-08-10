@@ -163,6 +163,12 @@
     object-fit: contain;
 }
 
+
+.faq-section {
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+}
+
 .faq-container {
     display: flex;
     flex-direction: column;

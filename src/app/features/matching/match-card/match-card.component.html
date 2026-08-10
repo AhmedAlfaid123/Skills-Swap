@@ -18,8 +18,8 @@
     </div>
 
     <dl class="meta-grid">
-        <div>
-            <dt>Track</dt>
+        <div class="track-row">
+            <dt>Track:</dt>
             <dd>{{ match.trackName }}</dd>
         </div>
         <div>
@@ -37,7 +37,7 @@
             <dd>
                 <div class="chip-list">
                     @for (skill of match.learnSkills; track skill) {
-                        <span class="chip chip-muted">{{ $any(skill).skillName || $any(skill).name || skill }}</span>
+                        <span class="chip learn">{{ $any(skill).skillName || $any(skill).name || skill }}</span>
                     }
                 </div>
             </dd>

@@ -15,12 +15,29 @@
 
   @if (loading) {
   <div class="users-grid" aria-busy="true">
-    @for (skeleton of [1, 2, 3, 4, 5, 6]; track skeleton) {
+    @for (skeleton of [1, 2, 3, 4, 5, 6, 7, 8]; track skeleton) {
     <article class="skeleton-card" aria-hidden="true">
-      <div class="skeleton-row avatar"></div>
-      <div class="skeleton-row title"></div>
-      <div class="skeleton-row copy"></div>
-      <div class="skeleton-row copy short"></div>
+      <div class="skeleton-header">
+        <div class="skeleton-row avatar"></div>
+        <div class="skeleton-row title"></div>
+      </div>
+
+      <div class="skeleton-section">
+        <div class="skeleton-row section-title"></div>
+        <div class="skeleton-badges">
+          <span class="skeleton-row badge-text"></span>
+          <span class="skeleton-row badge-text"></span>
+          <span class="skeleton-row badge-text"></span>
+        </div>
+      </div>
+
+      <div class="skeleton-section">
+        <div class="skeleton-row section-title"></div>
+        <div class="skeleton-badges">
+          <span class="skeleton-row badge-text"></span>
+          <span class="skeleton-row badge-text"></span>
+        </div>
+      </div>
     </article>
     }
   </div>
@@ -31,7 +48,7 @@
     <div
       class="user-card"
       *ngFor="let user of users"
-      (click)="goToUserDetails($any(user)._id || $any(user).id)"
+      (click)="goToUserDetails($any(user).id)"
     >
       <div class="card-header">
         @if (user.avatarUrl) {
