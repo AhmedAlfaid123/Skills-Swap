@@ -16,7 +16,11 @@ import { ProfileService } from "../../services/profile.service";
 export class NavbarComponent implements OnInit {
     unreadNotificationsCount = 0;
     userAvatar: string | null = null;
+    userName: string = '';
     isLoggedIn: boolean = false;
+    showProfileMenu: boolean = false;
+    avatarLoading: boolean = false;
+    private avatarLoaded: boolean = false;
 
     constructor(
         private notificationService: NotificationService,
@@ -33,7 +37,10 @@ export class NavbarComponent implements OnInit {
 
             if (this.isLoggedIn) {
                 this.fetchNotificationsCount();
-                this.getAvatar();
+
+                if (!this.avatarLoaded) {
+                    this.getAvatar();
+                }
             }
             this.cdr.detectChanges();
         });
@@ -47,16 +54,52 @@ export class NavbarComponent implements OnInit {
         }
     }
 
+    toggleProfileMenu(): void {
+        if (!this.showProfileMenu) {
+            this.showProfileMenu = true;
+        } else {
+            this.showProfileMenu = false;
+        }
+    }
+
+    closeProfileMenu(): void {
+        this.showProfileMenu = false;
+    }
+
+    logout(): void {
+        localStorage.removeItem('token');
+        this.userAvatar = null;
+        this.userName = '';
+        this.avatarLoaded = false;
+        this.isLoggedIn = false;
+        this.showProfileMenu = false;
+        this.cdr.detectChanges();
+        this.router.navigate(['/login']);
+    }
+
     getAvatar(): void {
+        this.avatarLoading = true;
         this.profileService.getProfileData().subscribe({
             next: (res: any) => {
                 const data = res?.data ?? res;
                 if (data?.avatarUrl) {
                     this.userAvatar = data.avatarUrl;
-                    this.cdr.detectChanges();
+                } else {
+                    this.userAvatar = null;
                 }
+
+                this.userName = data?.name ?? '';
+                this.avatarLoaded = true;
+                this.avatarLoading = false;
+                this.cdr.detectChanges();
             },
-            error: () => { }
+            error: () => {
+                this.avatarLoading = false;
+                this.userAvatar = null;
+                this.userName = '';
+                this.avatarLoaded = true;
+                this.cdr.detectChanges();
+            }
         });
     }
 

@@ -1,12 +1,4 @@
 <section class="page-shell">
-	<div class="page-header">
-		<div>
-			<p class="eyebrow">Requests</p>
-			<h1>Manage swap requests</h1>
-			<p class="page-copy">Review sent and received requests, then accept, reject, or cancel them from one place.</p>
-		</div>
-	</div>
-
 	<nav class="tab-bar" aria-label="Requests tabs">
 		<button type="button" [class.active]="activeTab === 'sent'" (click)="setActiveTab('sent')">Sent Requests</button>
 		<button type="button" [class.active]="activeTab === 'received'" (click)="setActiveTab('received')">Received Requests</button>

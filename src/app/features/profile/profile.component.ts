@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, CUSTOM_ELEMENTS_SCHEMA, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ProfileService } from '../../services/profile.service';
 import { User } from '../../models/user';
 
@@ -86,6 +87,7 @@ export class ProfileComponent implements OnInit {
   isSavingProfile = false;
   isSavingSkills = false;
   showAvatarMenu = false;
+  isLoading = false;
 
   teachSearchQuery = '';
   learnSearchQuery = '';
@@ -101,14 +103,23 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private service: ProfileService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      this.router.navigate(['/register']);
+      return;
+    }
+
     this.getProfileData();
   }
 
   getProfileData(): void {
+    this.isLoading = true;
     this.service.getProfileData().subscribe({
       next: (res: any) => {
         const data = res?.data ?? res;
@@ -123,6 +134,7 @@ export class ProfileComponent implements OnInit {
         this.profileSnapshot = { ...this.profile };
         this.stats[0].value = this.profile.skillsToTeach.length;
         this.stats[1].value = this.profile.skillsToLearn.length;
+        this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: () => {

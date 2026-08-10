@@ -1,3 +1,28 @@
+@if (isLoading) {
+<main class="profile-page profile-page-loading">
+    <div class="profile-container profile-skeleton-container">
+        <section class="card profile-skeleton-card">
+            <div class="skeleton-header">
+                <div class="skeleton-avatar shimmer"></div>
+                <div class="skeleton-info">
+                    <div class="skeleton-line skeleton-title shimmer"></div>
+                    <div class="skeleton-line skeleton-bio shimmer"></div>
+                    <div class="skeleton-line skeleton-small shimmer"></div>
+                </div>
+            </div>
+            <div class="skeleton-stats">
+                <div class="skeleton-stat shimmer"></div>
+                <div class="skeleton-stat shimmer"></div>
+                <div class="skeleton-stat shimmer"></div>
+            </div>
+            <div class="skeleton-skills">
+                <div class="skeleton-line skeleton-skill shimmer"></div>
+                <div class="skeleton-line skeleton-skill shimmer"></div>
+            </div>
+        </section>
+    </div>
+</main>
+} @else {
 <main class="profile-page">
     <div class="profile-container">
 
@@ -171,6 +196,7 @@
 
     </div>
 </main>
+}
 
 <div class="toast" [class.visible]="toastVisible">
     <iconify-icon icon="lucide:check-circle-2"></iconify-icon>

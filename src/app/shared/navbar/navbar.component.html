@@ -26,14 +26,50 @@
         </a>
 
         <div class="user-menu">
-          <a routerLink="/profile" class="user-avatar">
-            @if(userAvatar) {
+          <button type="button" class="user-avatar profile-trigger" (click)="toggleProfileMenu()">
+            @if(avatarLoading) {
+            <span class="avatar-skeleton"></span>
+            }
+            @else if(userAvatar) {
             <img [src]="userAvatar" alt="Avatar" />
             }
             @else {
             <iconify-icon icon="mdi:account-circle" class="default-avatar"></iconify-icon>
             }
-          </a>
+          </button>
+
+          @if(showProfileMenu) {
+          <div class="profile-dropdown" role="menu">
+            <div class="profile-dropdown-header">
+              <div class="profile-dropdown-avatar">
+                @if(userAvatar) {
+                <img [src]="userAvatar" alt="Avatar" />
+                } @else {
+                <iconify-icon icon="mdi:account-circle" class="default-avatar"></iconify-icon>
+                }
+              </div>
+              <div class="profile-text">
+                <span class="profile-title">{{ userName }}</span>
+              </div>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <a routerLink="/profile" class="profile-menu-link" (click)="closeProfileMenu()">
+              <span class="menu-icon">
+                <iconify-icon icon="mdi:account-circle-outline"></iconify-icon>
+              </span>
+              <span>View Profile</span>
+            </a>
+
+            <button type="button" class="btn-logout" (click)="logout()">
+              <span class="menu-icon">
+                <iconify-icon icon="mdi:logout"></iconify-icon>
+              </span>
+              <span>Logout</span>
+            </button>
+          </div>
+          }
         </div>
       </ng-container>
       }
