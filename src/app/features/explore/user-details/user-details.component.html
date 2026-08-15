@@ -1,40 +1,140 @@
-<div class="user-details-container">
-  <p *ngIf="loading">Loading...</p>
-  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-
-  <div *ngIf="user && !loading" class="profile-card">
-    <img [src]="user.avatarUrl || 'assets/default-avatar.png'" alt="avatar" />
-    <h2>{{ user.name }}</h2>
-    <p class="bio">{{ user.bio }}</p>
-
-    <div class="skills-section">
-      <h3>Skills to Teach</h3>
-      <ul>
-        <li *ngFor="let s of user.skillsToTeach">
-         
-          {{ $any(s).skillName || $any(s.skillId)?.name || s.skillId }} 
-          <span class="track-tag" *ngIf="$any(s).trackName || $any(s.trackId)?.name">
-            ({{ $any(s).trackName || $any(s.trackId)?.name }})
-          </span>
-        </li>
-      </ul>
-      <p *ngIf="!user.skillsToTeach || user.skillsToTeach.length === 0">None</p>
+<main class="profile-page">
+  <div class="profile-container">
+    @if (loading) {
+    <div class="card loading-card">
+      <p>Loading...</p>
     </div>
-
-    <div class="skills-section">
-      <h3>Skills to Learn</h3>
-      <ul>
-        <li *ngFor="let s of user.skillsToLearn">
-          {{ $any(s).skillName || $any(s.skillId)?.name || s.skillId }}
-          <span class="track-tag" *ngIf="$any(s).trackName || $any(s.trackId)?.name">
-            ({{ $any(s).trackName || $any(s.trackId)?.name }})
-          </span>
-        </li>
-      </ul>
-      <p *ngIf="!user.skillsToLearn || user.skillsToLearn.length === 0">None</p>
+    }
+    @if(errorMessage && !loading){
+    <div class="card error-card">
+      <iconify-icon icon="lucide:alert-circle"></iconify-icon>
+      <p>{{ errorMessage }}</p>
+      <button class="btn btn-secondary" (click)="goBack()">Back to Explore</button>
     </div>
+    }
+    @if(user && !loading && !errorMessage){
+    <ng-container>
 
-   
-    <a class="request-btn" routerLink="/matching">Find a matching skill swap</a>
+      <section class="card header-card">
+        <div class="header-actions">
+          <button class="back-btn" type="button" (click)="goBack()" title="Back to Explore">
+            <iconify-icon icon="lucide:arrow-left"></iconify-icon>
+            <span>Back</span>
+          </button>
+        </div>
+
+        <div class="header-top">
+          <div class="avatar-wrap">
+            @if(user.avatarUrl){
+            <img [src]="user.avatarUrl" [alt]="user.name" class="avatar-img" (error)="useDefaultAvatar($event)" />}
+            @else {
+            <div class="avatar-fallback">
+              {{ getAvatarLabel(user.name) }}
+            </div>
+            }
+          </div>
+
+          <div class="header-info">
+            <h1 class="profile-name">{{ user.name || 'User' }}</h1>
+            @if(user.bio){
+            <p class="profile-bio">{{ user.bio }}</p>
+            }
+            @if(user.email){
+            <p class="profile-email">{{ user.email }}</p>
+            }
+            <div class="joined-row">
+              <iconify-icon icon="lucide:calendar"></iconify-icon>
+              <span>Joined <strong>{{ joinedDate || '—' }}</strong></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card stats-card">
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-icon" style="background: #EAF1FF;">
+              <iconify-icon icon="lucide:target" style="color: #1A73E8;"></iconify-icon>
+            </span>
+            <div class="stat-text">
+              <p class="stat-label">Skills to Teach</p>
+              <p class="stat-value">{{ teachSkills.length }}</p>
+            </div>
+          </div>
+
+          <div class="stat-divider"></div>
+
+          <div class="stat-item">
+            <span class="stat-icon" style="background: #F3EEFF;">
+              <iconify-icon icon="lucide:book-open" style="color: #6C5CE7;"></iconify-icon>
+            </span>
+            <div class="stat-text">
+              <p class="stat-label">Skills to Learn</p>
+              <p class="stat-value">{{ learnSkills.length }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card skills-card">
+        <div class="skills-header">
+          <h2>Skills</h2>
+        </div>
+
+        <div class="skills-groups">
+
+          <div class="skills-group">
+            <p class="skills-group-title">Skills to Teach</p>
+            @if (teachSkills.length) {
+            <div class="chips-row">
+              @for (skill of teachSkills; track $index) {
+              <span class="chip simple-chip">
+                <iconify-icon [attr.icon]="skill.icon" [style.color]="skill.color"></iconify-icon>
+                <span>{{ skill.name }}</span>
+              </span>
+              }
+            </div>
+            }
+            @else {
+            <p class="empty-state">No skills to teach yet.</p>
+            }
+          </div>
+
+          <!-- Skills to Learn Group -->
+          <div class="skills-group">
+            <p class="skills-group-title">Skills to Learn</p>
+            @if (learnSkills.length) {
+            <div class="chips-row">
+              @for (skill of learnSkills; track $index) {
+              <span class="chip simple-chip">
+                <iconify-icon [attr.icon]="skill.icon" [style.color]="skill.color"></iconify-icon>
+                <span>{{ skill.name }}</span>
+              </span>
+              }
+            </div>
+            }
+            @else {
+            <p class="empty-state">No skills to learn yet.</p>
+            }
+          </div>
+
+        </div>
+      </section>
+
+      <section class="card action-card">
+        <div class="action-content">
+          <div>
+            <h3>Want to swap skills with {{ user.name }}?</h3>
+            <p>Check matches to start a skill swap collaboration.</p>
+          </div>
+          <a class="btn btn-primary" routerLink="/matching">
+            <iconify-icon icon="lucide:arrow-left-right"></iconify-icon>
+            <span>Find Skill Swap</span>
+          </a>
+        </div>
+      </section>
+
+    </ng-container>
+    }
   </div>
-</div>   
+</main>

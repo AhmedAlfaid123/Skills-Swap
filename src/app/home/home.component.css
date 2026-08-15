@@ -1,27 +1,26 @@
 .home {
     min-height: 100vh;
-    padding: 2rem 1.5rem;
+    padding: 0 0 3rem;
     background: var(--color-bg-secondary);
     font-family: var(--font-family);
 }
 
-.hero, .features, .how-it-section, .faq-section {
-    max-width: 1500px;
-    margin: 0 auto 3rem;
-}
-
 .hero {
-    padding: 3rem 2rem;
+    width: 100%;
+    padding: 5rem 1.5rem;
     color: var(--color-text);
-    border-radius: 24px;
     background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-bg) 100%);
+    margin-bottom: 6rem;
+    border-radius: 0;
 }
 
 .hero-content {
+    max-width: 1100px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
+    gap: 3rem;
 }
 
 .hero-text {
@@ -30,44 +29,47 @@
 }
 
 .hero-image {
-    width: 400px;
+    width: 480px;
     max-width: 100%;
     height: auto;
     object-fit: contain;
 }
 
-.hero h1 {
-    font-size: 2.4rem;
-    margin-bottom: 1rem;
-    font-weight: 700;
+.hero h1,
+.hero-heading {
+    font-size: 3.2rem;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+    font-weight: 800;
+    color: var(--color-text);
 }
 
 .hero p {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     line-height: 1.8;
-    margin-bottom: 1.5rem;
-    max-width: 700px;
+    margin-bottom: 2rem;
+    max-width: 720px;
     margin-left: 0;
     color: var(--color-text-secondary);
 }
 
 .hero-actions {
     display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: 1.25rem;
+    margin-top: 2rem;
 }
 
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 2rem;
     border-radius: 800px;
     font-weight: 600;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     cursor: pointer;
-    transition: box-shadow 0.2s ease;
+    transition: all 0.25s ease;
 }
 
 .profile-btn {
@@ -81,36 +83,52 @@
 }
 
 .register-btn:hover {
-    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
+    box-shadow: 0 6px 18px rgba(26, 115, 232, 0.3);
 }
 
 .login-btn {
     background-color: var(--color-bg);
     color: var(--color-accent);
-    border: 1px solid var(--color-accent);
+    border: 1.5px solid var(--color-accent);
 }
 
 .login-btn:hover {
-    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
+    box-shadow: 0 6px 18px rgba(26, 115, 232, 0.2);
 }
 
 .features-section {
-    max-width: 1200px;
-    margin: 0 auto 4rem;
+    max-width: 1100px;
+    margin: 0 auto 6rem;
+    padding: 0 1.5rem;
+}
+
+.section-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+.section-subtitle {
+    font-size: 1.15rem;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    color: var(--color-text-secondary);
 }
 
 .feature-rows {
     display: flex;
     flex-direction: column;
-    gap: 3.5rem;
-    margin-top: 2.5rem;
+    gap: 5rem;
+    margin-top: 3.5rem;
 }
 
 .feature-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 3rem;
+    gap: 4rem;
 }
 
 .feature-row.reverse {
@@ -122,29 +140,30 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .feature-badge {
     display: inline-block;
-    padding: 0.35rem 0.85rem;
+    padding: 0.45rem 1.1rem;
     border-radius: 50px;
     background: var(--color-accent-light);
     color: var(--color-accent);
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 700;
 }
 
 .feature-text h3 {
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: 2.2rem;
+    font-weight: 800;
     color: var(--color-text);
     margin: 0;
+    line-height: 1.3;
 }
 
 .feature-text p {
-    font-size: 1.05rem;
-    line-height: 1.7;
+    font-size: 1.15rem;
+    line-height: 1.8;
     color: var(--color-text-secondary);
     margin: 0;
 }
@@ -158,15 +177,16 @@
 
 .feature-image {
     width: 100%;
-    max-width: 420px;
+    max-width: 480px;
     height: auto;
     object-fit: contain;
 }
 
 
 .faq-section {
-    max-width: 1200px;
-    margin: 0 auto 4rem;
+    max-width: 1100px;
+    margin: 0 auto 6rem;
+    padding: 0 1.5rem;
 }
 
 .faq-container {

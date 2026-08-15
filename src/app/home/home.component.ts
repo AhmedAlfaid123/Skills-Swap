@@ -1,14 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
-
-interface HowItStep {
-    step: number;
-    title: string;
-    description: string;
-    icon: string;
-    image: string;
-}
+import { RevealOnScrollDirective } from '../shared/reveal-on-scroll.directive';
 
 interface FaqItem {
     question: string;
@@ -29,7 +22,7 @@ interface FaqItem {
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [RouterModule, CommonModule],
+    imports: [RouterModule, CommonModule, RevealOnScrollDirective],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css'

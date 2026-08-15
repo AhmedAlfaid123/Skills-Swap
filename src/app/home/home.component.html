@@ -2,37 +2,37 @@
     <div class="hero">
         <div class="hero-content">
             <div class="hero-text">
-                <h1>Start swaping skills with others</h1>
-                <p>Gain new skills, share your knowledge with the community, and begin your learning journey by swaping
+                <h1 class="hero-heading" appReveal="right" [revealDelay]="100" [revealDuration]="800">Start swapping skills with others</h1>
+                <p appReveal="right" [revealDelay]="250" [revealDuration]="800">Gain new skills, share your knowledge with the community, and begin your learning journey by swapping
                     skills with people like you.</p>
                 @if (isLoggedIn) {
-                <div class="hero-actions">
+                <div class="hero-actions" appReveal="right" [revealDelay]="400" [revealDuration]="800">
                     <a routerLink="/profile" class="btn profile-btn">View Profile</a>
                 </div>
                 } @else {
-                <div class="hero-actions">
+                <div class="hero-actions" appReveal="right" [revealDelay]="400" [revealDuration]="800">
                     <a routerLink="/register" class="btn register-btn">Register Now</a>
                     <a routerLink="/login" class="btn login-btn">Login</a>
                 </div>
                 }
             </div>
-            <img src="/hero.png" alt="Skill Swap" class="hero-image" />
+            <img src="/hero.png" alt="Skill Swap" class="hero-image" appReveal="left" [revealDelay]="200" [revealDuration]="900" />
         </div>
     </div>
 
     <div class="features-section">
-        <h2 class="section-title">How Skill Swap Works</h2>
-        <p class="section-subtitle">Skill Swap is designed to be simple and effective. Exchange knowledge with the community in three easy steps.</p>
+        <h2 class="section-title" appReveal="up" [revealDelay]="0">How Skill Swap Works</h2>
+        <p class="section-subtitle" appReveal="up" [revealDelay]="150">Skill Swap is designed to be simple and effective. Exchange knowledge with the community in three easy steps.</p>
 
         <div class="feature-rows">
             @for (feature of features; track $index) {
             <div class="feature-row" [class.reverse]="$index % 2 !== 0">
-                <div class="feature-text">
+                <div class="feature-text" [appReveal]="$index % 2 === 0 ? 'left' : 'right'" [revealDelay]="100">
                     <span class="feature-badge">Step 0{{ $index + 1 }}</span>
                     <h3>{{ feature.title }}</h3>
                     <p>{{ feature.description }}</p>
                 </div>
-                <div class="feature-image-wrapper">
+                <div class="feature-image-wrapper" [appReveal]="$index % 2 === 0 ? 'right' : 'left'" [revealDelay]="250">
                     <img [src]="feature.image" [alt]="feature.title" class="feature-image" />
                 </div>
             </div>
@@ -41,13 +41,14 @@
     </div>
 
     <div class="faq-section">
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <p class="section-subtitle">Everything you need to know about Skill Swap. Can't find what you're looking for?
+        <h2 class="section-title" appReveal="up" [revealDelay]="0">Frequently Asked Questions</h2>
+        <p class="section-subtitle" appReveal="up" [revealDelay]="150">Everything you need to know about Skill Swap. Can't find what you're looking for?
             Reach out to our community.</p>
 
         <div class="faq-container">
             @for (faq of faqs; track $index) {
-            <div class="faq-item" [class.expanded]="expandedIndex === $index">
+            <div class="faq-item" [class.expanded]="expandedIndex === $index"
+                 appReveal="up" [revealDelay]="$index * 100" [revealDuration]="600">
                 <button type="button" class="faq-question" (click)="toggleFaq($index)">
                     {{ faq.question }}
                     <iconify-icon [icon]="expandedIndex === $index ? 'mdi:chevron-up' : 'mdi:chevron-down'"

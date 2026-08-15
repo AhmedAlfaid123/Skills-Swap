@@ -23,10 +23,13 @@ export interface EnrichedSkillRef {
 export interface UserProfile {
   id: string;
   name: string;
+  email?: string;
   bio: string;
   avatarUrl: string;
   skillsToTeach: EnrichedSkillRef[];
   skillsToLearn: EnrichedSkillRef[];
+  createdAt?: string;
+  joinedDate?: string;
 }
 
 export interface UserProfileResponse {

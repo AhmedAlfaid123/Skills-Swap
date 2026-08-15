@@ -1,12 +1,12 @@
 <nav class="navbar">
   <div class="navbar-container">
     <div class="navbar-left">
-      <a routerLink="/" class="navbar-brand">
+      <a routerLink="/" class="navbar-brand" (click)="closeMobileMenu()">
         <img src="/logo.png" alt="Logo" class="brand-logo" />
         <span class="brand-text">Skill Swap</span>
       </a>
 
-      <div class="navbar-links">
+      <div class="navbar-links desktop-links">
         <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
         <a routerLink="/explore" routerLinkActive="active" class="nav-link">Explore</a>
         @if(isLoggedIn) {
@@ -25,7 +25,7 @@
           <span class="unread-dot" *ngIf="unreadNotificationsCount > 0">{{ unreadNotificationsCount }}</span>
         </a>
 
-        <div class="user-menu">
+        <div class="user-menu desktop-user-menu">
           <button type="button" class="user-avatar profile-trigger" (click)="toggleProfileMenu()">
             @if(avatarLoading) {
             <span class="avatar-skeleton"></span>
@@ -75,12 +75,91 @@
       }
       @else {
       <ng-container>
-        <div class="auth-buttons">
+        <div class="auth-buttons desktop-auth">
           <a routerLink="/login" class="btn-login">Login</a>
           <a routerLink="/register" class="btn-register">Register</a>
         </div>
       </ng-container>
       }
+
+      <button 
+        type="button" 
+        class="hamburger-btn" 
+        (click)="toggleMobileMenu()" 
+        [class.open]="isMobileMenuOpen"
+        aria-label="Toggle navigation menu">
+        <iconify-icon [icon]="isMobileMenuOpen ? 'lucide:x' : 'lucide:menu'"></iconify-icon>
+      </button>
     </div>
   </div>
+
+  @if(isMobileMenuOpen) {
+  <div class="mobile-menu-backdrop" (click)="closeMobileMenu()"></div>
+  <div class="mobile-menu-drawer">
+    @if(isLoggedIn) {
+    <div class="mobile-user-header">
+      <div class="mobile-user-avatar">
+        @if(userAvatar) {
+        <img [src]="userAvatar" alt="Avatar" />
+        } @else {
+        <iconify-icon icon="mdi:account-circle" class="default-avatar"></iconify-icon>
+        }
+      </div>
+      <div class="mobile-user-info">
+        <span class="mobile-user-name">{{ userName || 'User' }}</span>
+        <a routerLink="/profile" class="mobile-view-profile" (click)="closeMobileMenu()">View Profile</a>
+      </div>
+    </div>
+    <div class="mobile-divider"></div>
+    }
+
+    <div class="mobile-links">
+      <a routerLink="/home" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+        <iconify-icon icon="lucide:home" class="mobile-nav-icon"></iconify-icon>
+        <span>Home</span>
+      </a>
+      <a routerLink="/explore" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+        <iconify-icon icon="lucide:compass" class="mobile-nav-icon"></iconify-icon>
+        <span>Explore</span>
+      </a>
+
+      @if(isLoggedIn) {
+      <a routerLink="/matching" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+        <iconify-icon icon="lucide:arrow-left-right" class="mobile-nav-icon"></iconify-icon>
+        <span>Matching</span>
+      </a>
+      <a routerLink="/requests" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+        <iconify-icon icon="lucide:git-pull-request" class="mobile-nav-icon"></iconify-icon>
+        <span>Requests</span>
+      </a>
+      <a routerLink="/dashboard" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+        <iconify-icon icon="lucide:layout-dashboard" class="mobile-nav-icon"></iconify-icon>
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="/notifications" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+        <iconify-icon icon="lucide:bell" class="mobile-nav-icon"></iconify-icon>
+        <span>Notifications</span>
+        <span class="mobile-badge" *ngIf="unreadNotificationsCount > 0">{{ unreadNotificationsCount }}</span>
+      </a>
+      <a routerLink="/profile" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+        <iconify-icon icon="lucide:user" class="mobile-nav-icon"></iconify-icon>
+        <span>Profile</span>
+      </a>
+
+      <div class="mobile-divider"></div>
+
+      <button type="button" class="mobile-logout-btn" (click)="logout(); closeMobileMenu()">
+        <iconify-icon icon="lucide:log-out"></iconify-icon>
+        <span>Logout</span>
+      </button>
+      } @else {
+      <div class="mobile-divider"></div>
+      <div class="mobile-auth-actions">
+        <a routerLink="/login" class="btn-login mobile-btn" (click)="closeMobileMenu()">Login</a>
+        <a routerLink="/register" class="btn-register mobile-btn" (click)="closeMobileMenu()">Register</a>
+      </div>
+      }
+    </div>
+  </div>
+  }
 </nav>

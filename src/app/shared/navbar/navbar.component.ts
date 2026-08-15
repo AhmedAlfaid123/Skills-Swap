@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit {
     userName: string = '';
     isLoggedIn: boolean = false;
     showProfileMenu: boolean = false;
+    isMobileMenuOpen: boolean = false;
     avatarLoading: boolean = false;
     private avatarLoaded: boolean = false;
 
@@ -34,6 +35,8 @@ export class NavbarComponent implements OnInit {
     ngOnInit(): void {
         this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
             this.updateState();
+            this.closeMobileMenu();
+            this.closeProfileMenu();
 
             if (this.isLoggedIn) {
                 this.fetchNotificationsCount();
@@ -54,11 +57,21 @@ export class NavbarComponent implements OnInit {
         }
     }
 
-    toggleProfileMenu(): void {
-        if (!this.showProfileMenu) {
-            this.showProfileMenu = true;
-        } else {
+    toggleMobileMenu(): void {
+        this.isMobileMenuOpen = !this.isMobileMenuOpen;
+        if (this.isMobileMenuOpen) {
             this.showProfileMenu = false;
+        }
+    }
+
+    closeMobileMenu(): void {
+        this.isMobileMenuOpen = false;
+    }
+
+    toggleProfileMenu(): void {
+        this.showProfileMenu = !this.showProfileMenu;
+        if (this.showProfileMenu) {
+            this.isMobileMenuOpen = false;
         }
     }
 

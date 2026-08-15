@@ -123,9 +123,12 @@ export class ProfileComponent implements OnInit {
     this.service.getProfileData().subscribe({
       next: (res: any) => {
         const data = res?.data ?? res;
+        const date = new Date(data.createdAt);
+        const joinedDate = date.toLocaleDateString('en-US', {month:'short', year:'numeric'})
         this.profile = {
           ...this.profile,
           ...data,
+          joinedDate,
           skillsToTeach: data?.skillsToTeach ?? [],
           skillsToLearn: data?.skillsToLearn ?? []
         };
@@ -185,9 +188,11 @@ export class ProfileComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         const data = res?.data ?? res;
+        const joinedDate = this.profile.joinedDate;
         this.profile = {
           ...this.profile,
           ...data,
+          joinedDate,
           skillsToTeach: this.profile.skillsToTeach,
           skillsToLearn: this.profile.skillsToLearn
         };

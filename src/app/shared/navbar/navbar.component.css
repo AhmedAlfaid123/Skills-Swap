@@ -9,10 +9,10 @@
 
 .navbar-container {
   width: 100%;
-  max-width: none;
-  margin: 0;
+  max-width: 1150px;
+  margin: 0 auto;
   padding: 0 20px;
-  height: 40px;
+  height: 60px;
   display: flex;
   align-items: center;
   gap: 24px;
@@ -116,6 +116,7 @@
 .profile-trigger {
   border: 0;
   padding: 0;
+  background: transparent;
   cursor: pointer;
 }
 
@@ -314,25 +315,28 @@
 .btn-login {
   text-decoration: none;
   color: var(--color-text);
-  padding: 0.3rem 0.9rem;
+  padding: 0.4rem 1.1rem;
   border-radius: 25px;
   border: 2px solid var(--color-text-secondary);
-  font-weight: 500;
-  transition: border-color 0.2s ease;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
 }
 
 .btn-login:hover {
   border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .btn-register {
   text-decoration: none;
   background: var(--color-accent);
   color: white;
-  padding: 0.3rem 0.9rem;
+  padding: 0.4rem 1.1rem;
   border-radius: 25px;
   border: 2px solid var(--color-accent);
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.9rem;
   transition: box-shadow 0.2s ease;
 }
 
@@ -340,20 +344,238 @@
   box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
 }
 
-.btn-logout {
+/* Hamburger Toggle Button (Hidden on Desktop) */
+.hamburger-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   border: 1px solid var(--color-border);
-  background: transparent;
+  background: var(--color-bg);
   color: var(--color-text);
-  padding: 0.38rem 0.95rem;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.84rem;
+  font-size: 1.4rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.btn-logout:hover {
-  color: white;
-  background: var(--color-accent);
+.hamburger-btn:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-accent);
+}
+
+.hamburger-btn.open {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
   border-color: var(--color-accent);
+}
+
+/* Mobile Menu Backdrop & Drawer */
+.mobile-menu-backdrop {
+  display: none;
+}
+
+.mobile-menu-drawer {
+  display: none;
+}
+
+/* Responsive Breakpoint (Tablets and Mobiles) */
+@media (max-width: 820px) {
+  .desktop-links,
+  .desktop-auth {
+    display: none !important;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .navbar-container {
+    padding: 0 16px;
+  }
+
+  /* Backdrop */
+  .mobile-menu-backdrop {
+    display: block;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 98;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  /* Mobile Drawer / Dropdown Panel */
+  .mobile-menu-drawer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    padding: 20px 16px;
+    z-index: 99;
+    animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-user-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    background: var(--color-bg-secondary);
+    border-radius: 16px;
+    margin-bottom: 12px;
+  }
+
+  .mobile-user-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--color-accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-accent-light);
+    flex-shrink: 0;
+  }
+
+  .mobile-user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .mobile-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-user-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .mobile-view-profile {
+    font-size: 0.82rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .mobile-nav-link:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-accent);
+  }
+
+  .mobile-nav-link.active {
+    background: var(--color-accent-light);
+    color: var(--color-accent);
+  }
+
+  .mobile-nav-icon {
+    font-size: 1.25rem;
+  }
+
+  .mobile-badge {
+    margin-left: auto;
+    background: #EA4335;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+
+  .mobile-divider {
+    height: 1px;
+    background: var(--color-border);
+    margin: 8px 0;
+  }
+
+  .mobile-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #f1a1a1;
+    background: rgba(220, 53, 69, 0.08);
+    color: #b22234;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+
+  .mobile-logout-btn:hover {
+    background: rgba(220, 53, 69, 0.2);
+  }
+
+  .mobile-auth-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .mobile-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
