@@ -24,7 +24,8 @@ const show = async (req, res) => {
                 bio: user.bio,
                 avatarUrl: user.avatarUrl,
                 skillsToTeach: user.skillsToTeach,
-                skillsToLearn: user.skillsToLearn
+                skillsToLearn: user.skillsToLearn,
+                createdAt: user.createdAt
             }
         });
 
@@ -60,7 +61,8 @@ const updateUser = async (req, res) => {
                 bio: user.bio,
                 avatarUrl: user.avatarUrl,
                 skillsToTeach: user.skillsToTeach,
-                skillsToLearn: user.skillsToLearn
+                skillsToLearn: user.skillsToLearn,
+                createdAt: user.createdAt
             }
         });
     } catch (error) {
@@ -163,7 +165,8 @@ const updateSkills = async (req, res) => {
                 bio: userU.bio,
                 avatarUrl: userU.avatarUrl,
                 skillsToTeach: userU.skillsToTeach,
-                skillsToLearn: userU.skillsToLearn
+                skillsToLearn: userU.skillsToLearn,
+                createdAt: userU.createdAt
             }
         });
     } catch (error) {

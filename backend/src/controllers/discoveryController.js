@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const Skill = require('../models/Skill');
-const Track = require('../models/Track');
+const mongo = require('mongoose');
 
 
 
@@ -98,15 +98,53 @@ exports.filterByTrack = async (req, res) => {
   }
 };
 
-////////   هناديها كده بشكل مبدأي تقريبي 
-const profileController = require('./profileController');
-
 exports.getUserById = async (req, res) => {
-  const profile = await profileController.getProfileByIdInternal(req.params.userId);
-  return res.status(200).json({
-    success: true,
-    data: profile,
-  });
+  try {
+    const { userId } = req.params;
+    if (!userId || !mongo.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ success: false, message: 'Invalid user ID', code: 'INVALID_ID' });
+    }
+
+    const user = await User.findById(userId).select('-password')
+      .populate('skillsToTeach.trackId', 'name')
+      .populate('skillsToTeach.skillId', 'name')
+      .populate('skillsToLearn.trackId', 'name')
+      .populate('skillsToLearn.skillId', 'name');
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found', code: 'USER_NOT_FOUND' });
+    }
+
+    const skillsToTeach = (user.skillsToTeach || []).map((s) => ({
+      trackId: s.trackId?._id?.toString() || s.trackId?.toString() || '',
+      trackName: s.trackId?.name || '',
+      skillId: s.skillId?._id?.toString() || s.skillId?.toString() || '',
+      skillName: s.skillId?.name || ''
+    }));
+
+    const skillsToLearn = (user.skillsToLearn || []).map((s) => ({
+      trackId: s.trackId?._id?.toString() || s.trackId?.toString() || '',
+      trackName: s.trackId?.name || '',
+      skillId: s.skillId?._id?.toString() || s.skillId?.toString() || '',
+      skillName: s.skillId?.name || ''
+    }));
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        bio: user.bio || '',
+        avatarUrl: user.avatarUrl || '',
+        skillsToTeach,
+        skillsToLearn,
+        createdAt: user.createdAt
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message, code: 'SERVER_ERROR' });
+  }
 };
 
 
